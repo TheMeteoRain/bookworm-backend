@@ -2,7 +2,7 @@
 
 ## Books
 - GET   /books
-- GET   /books/{userId}
+- GET   /books/{bookId}
 - POST  /books
 
 ## User
