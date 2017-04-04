@@ -1,10 +1,7 @@
 package com.bookworm.controllers;
 
-import com.bookworm.models.User;
-import com.bookworm.repositories.UserRepository;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.bookworm.models.Member;
+import com.bookworm.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,33 +10,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/books")
-public class UserController {
+@RequestMapping(value = "/members")
+public class MemberController {
 
     @Autowired
-    UserRepository database;
+    MemberRepository database;
     
-    public UserController() {
+    public MemberController() {
         
     }
     
     @RequestMapping(method=RequestMethod.POST)
-    public void savePoint(@RequestBody User c) {
+    public void saveMember(@RequestBody Member c) {
         database.save(c);
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public Iterable<User> getLocations() {
+    public Iterable<Member> getMembers() {
         return database.findAll();
     }
     
-    @RequestMapping(value="/{locationId}", method=RequestMethod.GET)
-    public User fetchLocation(@PathVariable long locationId) {
-        return database.findOne(locationId);
+    @RequestMapping(value="/{memberId}", method=RequestMethod.GET)
+    public Member getMember(@PathVariable long memberId) {
+        return database.findOne(memberId);
     }
     
     @RequestMapping("/example")
-    public User greeting() {
-        return new User();
+    public Member greeting() {
+        return new Member(0, "asd", "asd", 1);
     }
 }

@@ -9,12 +9,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Akash
  */
 @Entity
+@Table(name="publisher")
 public class Publisher {
     
     @Id

@@ -1,35 +1,55 @@
 package com.bookworm.models;
 
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
  
 @Entity
-public class Book extends Item {
+@Table(name="book")
+public class Book {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    private long id;
     private long authorId;
     private long publisherId;
+    private String title;
     private String description;
     private String genre;
     private String format;
-    private String language;
+    private String lang;
     private int pages;
+    private long stock;
+    private double rating;
     private String isbn;
+    
+    public Book() {
+        
+    }
 
-    public Book(long id, long authorId, long publisherId, String title, String description, long stock, double rating, String genre, String format, String language, int pages, String isbn) {
-        super(id, title, stock, rating);
+    public Book(long id, long authorId, long publisherId, String title, String description, String genre, String format, String language, int pages, long stock, double rating, String isbn) {
+        this.id = id;
         this.authorId = authorId;
         this.publisherId = publisherId;
+        this.title = title;
         this.description = description;
         this.genre = genre;
         this.format = format;
-        this.language = language;
+        this.lang = language;
         this.pages = pages;
+        this.stock = stock;
+        this.rating = rating;
         this.isbn = isbn;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getAuthorId() {
@@ -46,6 +66,14 @@ public class Book extends Item {
 
     public void setPublisherId(long publisherId) {
         this.publisherId = publisherId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -72,12 +100,12 @@ public class Book extends Item {
         this.format = format;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getLang() {
+        return lang;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     public int getPages() {
@@ -88,6 +116,22 @@ public class Book extends Item {
         this.pages = pages;
     }
 
+    public long getStock() {
+        return stock;
+    }
+
+    public void setStock(long stock) {
+        this.stock = stock;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
     public String getIsbn() {
         return isbn;
     }
@@ -95,6 +139,6 @@ public class Book extends Item {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-
+    
     
 }
