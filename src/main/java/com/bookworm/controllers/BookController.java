@@ -2,8 +2,6 @@ package com.bookworm.controllers;
 
 import com.bookworm.models.*;
 import com.bookworm.repositories.BookRepository;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +49,6 @@ public class BookController {
     
     @RequestMapping("/example")
     public Book greeting() {
-        return new Book(0, 1, 1, "Päiväkirja", "Anne Frankin päiväkirja tunnettiin aiemmin hänen isänsä Otto Frankin toimittamana Nuoren tytön päiväkirjana.","Viihde", "Nidottu, pehmeäkantinen", "Suomi", 15, 421, 5, "9789513143510");
+        return new Book(0,1, "Java: A Beginners Guide","Fully updated for Java Platform, Standard Edition 8 (Java SE 8)", "Java", "Hardcover", 20.89, 5, 728, "978-0071809252");
     }
 }
