@@ -46,6 +46,16 @@ public class BookController {
     public Book getBook(@PathVariable long bookId) {
         return database.findOne(bookId);
     }
+
+    @Transactional
+    @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST)
+    public void buyBook(@PathVariable long bookId) {
+        Book book = getBook(bookId);
+
+        if (book != null && book.getStock() > 0) {
+            reduceBookStock(bookId);
+        }
+    }
     
     @RequestMapping("/example")
     public Book greeting() {
