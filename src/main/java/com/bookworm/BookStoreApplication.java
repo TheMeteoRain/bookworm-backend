@@ -16,8 +16,16 @@ public class BookStoreApplication {
     private static void printCommands() {
         System.out.println("");
         System.out.println("");
-        
+
         System.out.println("========== Backend Commands ==========");
+        System.out.println("");
+
+        System.out.println("===== AUTHENTICATION=====");
+        System.out.println("POST /login");
+        System.out.println("POST /register");
+        System.out.println("GET /me");
+        System.out.println("");
+
         System.out.println("===== Book =====");
         System.out.println("GET /books");
         System.out.println("GET /books/{bookId}");
