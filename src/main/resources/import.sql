@@ -46,7 +46,7 @@ INSERT INTO genre (name) VALUES ('Python');
 INSERT INTO genre (name) VALUES ('JavaScript');
 
 
-INSERT INTO member (username, email, password) VALUES ('admin', 'admin@admin.fi', 'admin');
+# INSERT INTO member (username, email, password) VALUES ('admin', 'admin@admin.fi', 'admin');
 INSERT INTO member (username, email, password) VALUES ('jeppe', 'jeppe@jeppe.fi', 'jeppe');
 INSERT INTO member (username, email, password) VALUES ('jussi', 'jussi@jussi.fi', 'jussi');
 
