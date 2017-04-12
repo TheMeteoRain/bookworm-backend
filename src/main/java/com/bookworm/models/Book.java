@@ -13,34 +13,30 @@ public class Book {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
-    private long authorId;
     private long publisherId;
     private String title;
     private String description;
     private String genre;
     private String format;
-    private String lang;
+    private double price;
+    private int stock;
     private int pages;
-    private long stock;
-    private double rating;
     private String isbn;
     
     public Book() {
         
     }
 
-    public Book(long id, long authorId, long publisherId, String title, String description, String genre, String format, String language, int pages, long stock, double rating, String isbn) {
+    public Book(long id, long publisherId, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
         this.id = id;
-        this.authorId = authorId;
         this.publisherId = publisherId;
         this.title = title;
         this.description = description;
         this.genre = genre;
         this.format = format;
-        this.lang = language;
-        this.pages = pages;
+        this.price = price;
         this.stock = stock;
-        this.rating = rating;
+        this.pages = pages;
         this.isbn = isbn;
     }
 
@@ -50,14 +46,6 @@ public class Book {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(long authorId) {
-        this.authorId = authorId;
     }
 
     public long getPublisherId() {
@@ -100,12 +88,20 @@ public class Book {
         this.format = format;
     }
 
-    public String getLang() {
-        return lang;
+    public double getPrice() {
+        return price;
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public int getPages() {
@@ -116,22 +112,6 @@ public class Book {
         this.pages = pages;
     }
 
-    public long getStock() {
-        return stock;
-    }
-
-    public void setStock(long stock) {
-        this.stock = stock;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
     public String getIsbn() {
         return isbn;
     }
@@ -139,6 +119,4 @@ public class Book {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-    
-    
 }

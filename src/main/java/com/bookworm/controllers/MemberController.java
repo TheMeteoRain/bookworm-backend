@@ -19,7 +19,7 @@ public class MemberController {
     public MemberController() {
         
     }
-    
+
     @RequestMapping(method=RequestMethod.POST)
     public void saveMember(@RequestBody Member c) {
         database.save(c);
@@ -37,6 +37,8 @@ public class MemberController {
     
     @RequestMapping("/example")
     public Member greeting() {
-        return new Member(0, "asd", "asd", 1);
+        return new Member(0, "a@b.c", "kayttaja", "salasana");
     }
+
+
 }

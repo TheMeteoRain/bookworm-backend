@@ -1,39 +1,102 @@
 SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS publisher;
-CREATE TABLE publisher (`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(150) NOT NULL,`country` VARCHAR(255),`city` VARCHAR(255)) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE publisher (
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(150) NOT NULL,
+    `country` VARCHAR(255),
+    `city` VARCHAR(255)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS author;
-CREATE TABLE author (`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,`first_name` VARCHAR(100) NOT NULL,`last_name` VARCHAR(100) NOT NULL) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE author (
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `first_name` VARCHAR(100) NOT NULL,
+    `last_name` VARCHAR(100) NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS book;
-CREATE TABLE book (`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,`publisher_id` INT UNSIGNED,`title` VARCHAR(255) NOT NULL,`description` TEXT,`genre` VARCHAR(150) NOT NULL,`format` VARCHAR(150)  NOT NULL,`price` DECIMAL(5,2) NOT NULL,`stock` SMALLINT NOT NULL,`pages` SMALLINT UNSIGNED NOT NULL,`isbn` VARCHAR(15) NOT NULL,CONSTRAINT `fk_book_publisher` FOREIGN KEY (`publisher_id`) REFERENCES `publisher`(`id`) ON UPDATE CASCADE ON DELETE SET NULL) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE book (
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `publisher_id` INT UNSIGNED,
+    `title` VARCHAR(255) NOT NULL,
+    `description` TEXT,
+    `genre` VARCHAR(150) NOT NULL,
+    `format` VARCHAR(150)  NOT NULL,
+    `price` DECIMAL(5,2) NOT NULL,
+    `stock` SMALLINT NOT NULL,
+    `pages` SMALLINT UNSIGNED NOT NULL,
+    `isbn` VARCHAR(15) NOT NULL,
+
+    CONSTRAINT `fk_book_publisher` FOREIGN KEY (`publisher_id`) REFERENCES `publisher`(`id`) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS book_author;
-CREATE TABLE book_author (`author_id` INT UNSIGNED,`book_id` INT UNSIGNED,PRIMARY KEY (`author_id`, `book_id`),CONSTRAINT `fk_bookauthor_author` FOREIGN KEY (`author_id`) REFERENCES `author`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,CONSTRAINT `fk_bookauthor_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE book_author (
+    `author_id` INT UNSIGNED,
+    `book_id` INT UNSIGNED,
+
+    PRIMARY KEY (`author_id`, `book_id`),
+    CONSTRAINT `fk_bookauthor_author` FOREIGN KEY (`author_id`) REFERENCES `author`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_bookauthor_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS member;
-CREATE TABLE member (`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,`username` VARCHAR(100) NOT NULL,`email` VARCHAR(150) NOT NULL,`password` VARCHAR(255) NOT NULL,UNIQUE KEY `username` (`username`),UNIQUE KEY `email` (`email`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE member (
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `username` VARCHAR(100) NOT NULL,
+    `email` VARCHAR(150) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+
+    UNIQUE KEY `username` (`username`),
+    UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS review;
-CREATE TABLE review (`member_id` INT UNSIGNED,`book_id` INT UNSIGNED,`text` TEXT,`stars` DECIMAL(3,2) NOT NULL,PRIMARY KEY (`member_id`, `book_id`),CONSTRAINT `fk_review_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,CONSTRAINT `fk_review_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE review (
+    `member_id` INT UNSIGNED,
+    `book_id` INT UNSIGNED,
+    `text` TEXT,
+    `stars` DECIMAL(3,2) NOT NULL,
+
+    PRIMARY KEY (`member_id`, `book_id`),
+    CONSTRAINT `fk_review_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_review_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS purchase;
-CREATE TABLE purchase (`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,`member_id` INT UNSIGNED NOT NULL,`book_id` INT UNSIGNED NOT NULL,`amount` TINYINT UNSIGNED NOT NULL,CONSTRAINT `fk_purchase_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,CONSTRAINT `fk_purchase_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE purchase (
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `member_id` INT UNSIGNED NOT NULL,
+    `book_id` INT UNSIGNED NOT NULL,
+    `amount` TINYINT UNSIGNED NOT NULL,
+
+    CONSTRAINT `fk_purchase_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_purchase_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS notification;
-CREATE TABLE notification (`book_id` INT UNSIGNED,`member_id` INT UNSIGNED,PRIMARY KEY (`member_id`, `book_id`),CONSTRAINT `fk_notification_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,CONSTRAINT `fk_notification_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE notification (
+    `book_id` INT UNSIGNED,
+    `member_id` INT UNSIGNED,
+
+    PRIMARY KEY (`member_id`, `book_id`),
+    CONSTRAINT `fk_notification_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_notification_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS genre;
-CREATE TABLE genre (`name` VARCHAR(150) PRIMARY KEY) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+CREATE TABLE genre (
+    `name` VARCHAR(150) PRIMARY KEY
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 CREATE INDEX `index_book_title` ON `book` (`title`);
@@ -46,7 +109,7 @@ INSERT INTO genre (name) VALUES ('Python');
 INSERT INTO genre (name) VALUES ('JavaScript');
 
 
-# INSERT INTO member (username, email, password) VALUES ('admin', 'admin@admin.fi', 'admin');
+INSERT INTO member (username, email, password) VALUES ('admin', 'admin@admin.fi', 'admin');
 INSERT INTO member (username, email, password) VALUES ('jeppe', 'jeppe@jeppe.fi', 'jeppe');
 INSERT INTO member (username, email, password) VALUES ('jussi', 'jussi@jussi.fi', 'jussi');
 
