@@ -5,11 +5,7 @@
  */
 package com.bookworm.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -22,19 +18,22 @@ public class Member {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
+    private String email;
     private String username;
     private String password;
-    private int auth;
-    
+
+    @Transient
+    private boolean isAdmin = false;
+
     public Member() {
         
     }
 
-    public Member(long id, String username, String password, int auth) {
+    public Member(long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.auth = auth;
+        this.email = email;
     }
 
     public long getId() {
@@ -61,13 +60,20 @@ public class Member {
         this.password = password;
     }
 
-    public int getAuth() {
-        return auth;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setAuth(int auth) {
-        this.auth = auth;
+    public void setEmail(String email) {
+        this.email = email;
     }
-    
-    
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 }
