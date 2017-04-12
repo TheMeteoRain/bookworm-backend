@@ -37,7 +37,7 @@ public class MemberController {
     
     @RequestMapping("/example")
     public Member greeting() {
-        return new Member(0, "asd", "asd", "a@b.c");
+        return new Member(0, "a@b.c", "kayttaja", "salasana");
     }
 
 

@@ -48,7 +48,7 @@ public class BookController {
     }
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
-    public Book getBook(@PathVariable long bookId, HttpServletRequest req, HttpServletResponse res, Principal user) throws IOException {
+    public Book getBook(@PathVariable long bookId) {
         return database.findOne(bookId);
     }
 
