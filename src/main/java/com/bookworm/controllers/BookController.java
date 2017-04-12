@@ -52,6 +52,16 @@ public class BookController {
         return database.findOne(bookId);
     }
 
+    @Transactional
+    @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST)
+    public void buyBook(@PathVariable long bookId) {
+        Book book = getBook(bookId);
+
+        if (book != null && book.getStock() > 0) {
+            reduceBookStock(bookId);
+        }
+    }
+
     @RequestMapping("/example")
     public Book greeting() {
         return new Book(0, 1, "Java: A Beginners Guide", "Fully updated for Java Platform, Standard Edition 8 (Java SE 8)", "Java", "Hardcover", 20.89, 5, 728, "978-0071809252");
