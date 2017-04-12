@@ -8,4 +8,5 @@ public interface MemberRepository extends CrudRepository<Member, Long> {
     void delete(Member entity);
     void delete(Long id);
     Member findOne(Long id);
+    Member findFirstByUsername(String username);
 }

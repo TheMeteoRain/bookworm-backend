@@ -1,5 +1,7 @@
 package com.bookworm;
 
+import com.bookworm.controllers.AuthController;
+import com.bookworm.security.MemberRegisterDetails;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
