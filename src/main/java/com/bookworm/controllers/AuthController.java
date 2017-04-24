@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@CrossOrigin(exposedHeaders = "Authorization")
 @RestController
 public class AuthController {
 
@@ -36,6 +37,7 @@ public class AuthController {
                 return "Successfully logged in";
             }
         }
+        res.setStatus(403);
         return "Login failed";
     }
 
@@ -65,6 +67,7 @@ public class AuthController {
         return true;
     }
 
+    @CrossOrigin
     @RequestMapping(value= "/me", method=RequestMethod.GET)
     public ResponseEntity<?> me(HttpServletRequest req) {
         AuthenticatedUser user = AuthenticatedUser.fromRequest(req);
