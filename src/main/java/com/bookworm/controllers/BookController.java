@@ -272,6 +272,11 @@ public class BookController {
                 
         return response;
     }
+
+    @RequestMapping(value="/search/{searchWord}", method=RequestMethod.GET)
+    public Iterable<Book> searchBooks(@PathVariable String searchWord) {
+        return database.findByTitleContainingOrDescriptionContainingOrGenreContainingAllIgnoreCase(searchWord, searchWord, searchWord);
+    }
     
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
