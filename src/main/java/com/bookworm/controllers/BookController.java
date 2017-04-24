@@ -41,6 +41,11 @@ public class BookController {
     public Iterable<Book> getBooks() {
         return database.findAll();
     }
+
+    @RequestMapping(value="/search/{searchWord}", method=RequestMethod.GET)
+    public Iterable<Book> searchBooks(@PathVariable String searchWord) {
+        return database.findByTitleContainingOrDescriptionContainingOrGenreContainingAllIgnoreCase(searchWord, searchWord, searchWord);
+    }
     
     @RequestMapping(value="/{bookId}", method=RequestMethod.GET)
     public Book getBook(@PathVariable long bookId) {
