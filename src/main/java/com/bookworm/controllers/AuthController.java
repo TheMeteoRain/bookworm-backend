@@ -67,6 +67,7 @@ public class AuthController {
         return true;
     }
 
+    @CrossOrigin
     @RequestMapping(value= "/me", method=RequestMethod.GET)
     public ResponseEntity<?> me(HttpServletRequest req) {
         AuthenticatedUser user = AuthenticatedUser.fromRequest(req);
