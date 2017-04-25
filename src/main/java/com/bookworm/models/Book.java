@@ -5,14 +5,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.springframework.hateoas.ResourceSupport;
  
 @Entity
 @Table(name="book")
-public class Book {
+public class Book extends ResourceSupport {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    private long bookId;
     private long publisherId;
     private String title;
     private String description;
@@ -27,8 +28,8 @@ public class Book {
         
     }
 
-    public Book(long id, long publisherId, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
-        this.id = id;
+    public Book(long bookId, long publisherId, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
+        this.bookId = bookId;
         this.publisherId = publisherId;
         this.title = title;
         this.description = description;
@@ -40,12 +41,12 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public long getId() {
-        return id;
+    public long getBookId() {
+        return bookId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBookId(long id) {
+        this.bookId = id;
     }
 
     public long getPublisherId() {

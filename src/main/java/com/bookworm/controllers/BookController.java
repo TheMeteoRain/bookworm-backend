@@ -1,5 +1,9 @@
 package com.bookworm.controllers;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
 import com.bookworm.models.*;
 import com.bookworm.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,57 +17,90 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.security.Principal;
+import java.util.Arrays;
+import javax.xml.ws.Response;
+import org.springframework.hateoas.Link;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/books")
 public class BookController {
 
     @Autowired
-    BookRepository database;
-
+    BookRepository bookRepository;
+    
     public BookController() {
-
+        
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public void saveBook(@RequestBody Book c) {
-        database.save(c);
+        bookRepository.save(c);
     }
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.DELETE)
     public void deleteBook(@PathVariable long bookId) {
-        database.delete(bookId);
-    }
-
-    @Transactional
-    @RequestMapping(value = "/{bookId}/stock", method = RequestMethod.DELETE)
-    public void reduceBookStock(@PathVariable long bookId) {
-        database.reduceStock(bookId);
+        bookRepository.delete(bookId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Book> getBooks() {
-        return database.findAll();
+    public ResponseEntity<Book> getBooks() {
+        HttpHeaders headers = new HttpHeaders();
+        Iterable<Book> books = bookRepository.findAll();
+        for (Book book : books) {
+            Link selfLink = linkTo(BookController.class).slash(book.getBookId()).withSelfRel();
+            Link buyLink = linkTo(methodOn(BookController.class).buyBook(book.getBookId())).withRel("Buy");
+            book.add(selfLink);
+            book.add(buyLink);
+        }
+        
+        headers.setLocation(linkTo(BookController.class).toUri());
+        
+        return new ResponseEntity(books, headers, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
-    public Book getBook(@PathVariable long bookId) {
-        return database.findOne(bookId);
+    public ResponseEntity<Book> getBook(@PathVariable long bookId) {
+        HttpHeaders headers = new HttpHeaders();
+        Book book = bookRepository.findOne(bookId);
+        Link selfLink = linkTo(BookController.class).slash(book.getBookId()).withSelfRel();
+        Link buyLink = linkTo(methodOn(BookController.class).buyBook(book.getBookId())).withRel("Buy");
+        book.add(selfLink);
+        book.add(buyLink);
+        
+        headers.setLocation(linkTo(BookController.class).slash(book.getBookId()).toUri());
+        
+        return new ResponseEntity(book, headers, HttpStatus.OK);
     }
 
     @Transactional
     @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST)
-    public void buyBook(@PathVariable long bookId) {
-        Book book = getBook(bookId);
+    public ResponseEntity<Book> buyBook(@PathVariable long bookId) {
+        HttpHeaders headers = new HttpHeaders();
+        Book book = bookRepository.findOne(bookId);
 
         if (book != null && book.getStock() > 0) {
             reduceBookStock(bookId);
         }
+        headers.setLocation(linkTo(BookController.class).slash(book.getBookId()).toUri());
+        
+        return new ResponseEntity(bookRepository.findOne(bookId), headers, HttpStatus.OK);
     }
 
-    @RequestMapping("/example")
-    public Book greeting() {
-        return new Book(0, 1, "Java: A Beginners Guide", "Fully updated for Java Platform, Standard Edition 8 (Java SE 8)", "Java", "Hardcover", 20.89, 5, 728, "978-0071809252");
+    @Transactional
+    @RequestMapping(value = "/{bookId}/reduce_stock", method = RequestMethod.DELETE)
+    public ResponseEntity<String> reduceBookStock(@PathVariable long bookId) {
+        HttpHeaders headers = new HttpHeaders();
+        Book book = bookRepository.findOne(bookId);
+        bookRepository.reduceStock(book.getBookId());
+        
+        headers.setLocation(linkTo(BookController.class).slash(book.getBookId()).toUri());
+        
+        return new ResponseEntity("asd", headers, HttpStatus.OK);
     }
 }
