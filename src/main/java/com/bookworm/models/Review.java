@@ -14,6 +14,9 @@ public class Review {
     private String text;
     private double stars;
 
+    public Review() {
+    }
+
     @Id
     @ManyToOne
     @JoinColumn(name = "book_id")
