@@ -6,6 +6,7 @@
 package com.bookworm.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  *
@@ -21,6 +22,8 @@ public class Member {
     private String email;
     private String username;
     private String password;
+    private Set<Review> reviews;
+
 
     @Transient
     private boolean isAdmin = false;
@@ -75,5 +78,14 @@ public class Member {
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setBookPublishers(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 }

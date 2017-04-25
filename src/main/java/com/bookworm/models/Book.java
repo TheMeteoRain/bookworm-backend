@@ -1,11 +1,8 @@
 package com.bookworm.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
- 
+import javax.persistence.*;
+import java.util.Set;
+
 @Entity
 @Table(name="book")
 public class Book {
@@ -22,7 +19,8 @@ public class Book {
     private int stock;
     private int pages;
     private String isbn;
-    
+    private Set<Review> reviews;
+
     public Book() {
         
     }
@@ -118,5 +116,14 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setBookPublishers(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 }
