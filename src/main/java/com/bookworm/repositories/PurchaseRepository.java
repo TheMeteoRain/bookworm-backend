@@ -13,6 +13,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author Akash
  */
 public interface PurchaseRepository extends CrudRepository<Purchase, Long> {
-    Purchase findOne(Long id);
-    Iterable<Purchase> findAll();
+    
 }
