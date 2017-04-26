@@ -30,8 +30,7 @@ public class Author extends ResourceSupport {
         
     }
 
-    public Author(long authorId, String first_name, String last_name) {
-        this.authorId = authorId;
+    public Author(String first_name, String last_name) {
         this.first_name = first_name;
         this.last_name = last_name;
     }

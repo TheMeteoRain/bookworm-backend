@@ -25,8 +25,11 @@ public class Publisher extends ResourceSupport {
     private long pubilsherId;
     private String name;
 
-    public Publisher(long PublisherId, String name) {
-        this.pubilsherId = PublisherId;
+    public Publisher() {
+        
+    }
+
+    public Publisher(String name) {
         this.name = name;
     }
 

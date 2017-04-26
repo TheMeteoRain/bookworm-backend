@@ -6,6 +6,7 @@
 package com.bookworm.models;
 
 import javax.persistence.*;
+import org.springframework.hateoas.ResourceSupport;
 
 /**
  *
@@ -13,7 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="member")
-public class Member {
+public class Member extends ResourceSupport {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -29,8 +30,7 @@ public class Member {
         
     }
 
-    public Member(long memberId, String username, String password, String email) {
-        this.memberId = memberId;
+    public Member(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;

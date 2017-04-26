@@ -5,6 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.hateoas.ResourceSupport;
  
 @Entity
@@ -15,21 +21,38 @@ public class Book extends ResourceSupport {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long bookId;
     private long publisherId;
+    
+    @NotNull(message = "Title may not be empty")
+    @Length(min = 1, max = 255, message = "Title length must be between 1 and 255")
     private String title;
+    
+    @NotBlank(message = "Description may not be empty")
     private String description;
+    
+    @Pattern(regexp="JS|Java|CSS|C|Python|JavaScript", message = "Genre must match JS, Java, CSS, C, Pyhton or JavaScript")
+    @NotBlank(message = "Genre may not be empty")
     private String genre;
+    
+    @NotBlank(message = "Format may not be empty")
     private String format;
+    
+    @Min(value = 5, message = "Price must be greater than or equal to 5")
     private double price;
+    
     private int stock;
+    
+    @Min(value = 1, message = "Pages must be greater than or equal to 1")
     private int pages;
+    
+    @NotBlank(message = "ISBN may not be empty")
+    @Length(min = 10, max = 13, message = "ISBN length must be between 10 and 13")
     private String isbn;
     
     public Book() {
         
     }
 
-    public Book(long bookId, long publisherId, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
-        this.bookId = bookId;
+    public Book(long publisherId, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
         this.publisherId = publisherId;
         this.title = title;
         this.description = description;
