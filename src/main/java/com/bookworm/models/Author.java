@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.springframework.hateoas.ResourceSupport;
 
 /**
  *
@@ -17,11 +18,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="author")
-public class Author {
+public class Author extends ResourceSupport {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    private long authorId;
     private String first_name;
     private String last_name;
     
@@ -29,18 +30,18 @@ public class Author {
         
     }
 
-    public Author(long id, String first_name, String last_name) {
-        this.id = id;
+    public Author(long authorId, String first_name, String last_name) {
+        this.authorId = authorId;
         this.first_name = first_name;
         this.last_name = last_name;
     }
 
-    public long getId() {
-        return id;
+    public long getAuthorId() {
+        return authorId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAuthorId(long authorId) {
+        this.authorId = authorId;
     }
 
     public String getFirst_name() {

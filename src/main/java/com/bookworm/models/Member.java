@@ -17,7 +17,7 @@ public class Member {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    private long memberId;
     private String email;
     private String username;
     private String password;
@@ -29,19 +29,19 @@ public class Member {
         
     }
 
-    public Member(long id, String username, String password, String email) {
-        this.id = id;
+    public Member(long memberId, String username, String password, String email) {
+        this.memberId = memberId;
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public long getId() {
-        return id;
+    public long getMemberId() {
+        return memberId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMemberId(long memberId) {
+        this.memberId = memberId;
     }
 
     public String getUsername() {

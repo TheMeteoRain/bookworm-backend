@@ -45,8 +45,8 @@ public class Book extends ResourceSupport {
         return bookId;
     }
 
-    public void setBookId(long id) {
-        this.bookId = id;
+    public void setBookId(long bookId) {
+        this.bookId = bookId;
     }
 
     public long getPublisherId() {
