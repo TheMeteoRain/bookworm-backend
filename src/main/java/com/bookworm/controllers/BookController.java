@@ -71,6 +71,7 @@ public class BookController {
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
         
         if (findThisBook != null) {
+            //findThisBook.setPublisher(findThisBook.getPublisher());
             response = new ResponseEntity(findThisBook, HttpStatus.OK);
             
             Link selfLink = linkTo(BookController.class).slash(findThisBook.getBookId()).withSelfRel();
@@ -78,7 +79,7 @@ public class BookController {
             findThisBook.add(selfLink);
             findThisBook.add(buyLink);
         }
-        
+        System.out.println(findThisBook.getPublisher().getName());
         return response;
     }
     

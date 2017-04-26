@@ -1,9 +1,17 @@
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -17,11 +25,12 @@ import org.springframework.hateoas.ResourceSupport;
 @Table(name="book")
 public class Book extends ResourceSupport {
     
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private long bookId;
-    private long publisherId;
     
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Publisher publisher;
+
     @NotNull(message = "Title may not be empty")
     @Length(min = 1, max = 255, message = "Title length must be between 1 and 255")
     private String title;
@@ -45,15 +54,15 @@ public class Book extends ResourceSupport {
     private int pages;
     
     @NotBlank(message = "ISBN may not be empty")
-    @Length(min = 10, max = 13, message = "ISBN length must be between 10 and 13")
+    @Length(min = 10, max = 15, message = "ISBN length must be between 10 and 15")
     private String isbn;
     
     public Book() {
         
     }
 
-    public Book(long publisherId, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
-        this.publisherId = publisherId;
+    public Book(Publisher publisher, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
+        this.publisher = publisher;
         this.title = title;
         this.description = description;
         this.genre = genre;
@@ -64,6 +73,8 @@ public class Book extends ResourceSupport {
         this.isbn = isbn;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public long getBookId() {
         return bookId;
     }
@@ -72,12 +83,14 @@ public class Book extends ResourceSupport {
         this.bookId = bookId;
     }
 
-    public long getPublisherId() {
-        return publisherId;
+    @ManyToOne
+    @JoinColumn(name = "publisherId", referencedColumnName = "publisherId")
+    public Publisher getPublisher() {
+        return publisher;
     }
 
-    public void setPublisherId(long publisherId) {
-        this.publisherId = publisherId;
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 
     public String getTitle() {

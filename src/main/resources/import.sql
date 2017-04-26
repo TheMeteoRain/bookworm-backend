@@ -53,7 +53,7 @@ INSERT INTO member (username, email, password) VALUES ('jussi', 'jussi@jussi.fi'
 
 INSERT INTO publisher (name, country, city) VALUES ('McGraw-Hill Education', 'United States', 'New York City');
 INSERT INTO publisher (name, country, city) VALUES ('O''Reilly Media', 'United States', 'Sebastopol, California');
-INSERT INTO publisher (name, country, city) VALUES ('Triangle Connection LLC', '', '');
+INSERT INTO publisher (name, country, city) VALUES ('Triangle Connection LLC', 'Unknown', 'Unknown');
 INSERT INTO publisher (name, country, city) VALUES ('John Wiley & Sons', 'United States', 'New York City');
 INSERT INTO publisher (name, country, city) VALUES ('Prentice Hall', 'United States' ,'New Jersey');
 INSERT INTO publisher (name, country, city) VALUES ('Addison-Wesley', 'United States' ,'Boston');
