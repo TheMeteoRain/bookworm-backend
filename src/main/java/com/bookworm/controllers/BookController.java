@@ -4,6 +4,8 @@ import com.bookworm.models.*;
 import com.bookworm.repositories.BookRepository;
 import com.bookworm.repositories.PurchaseRepository;
 import com.bookworm.security.AuthenticatedUser;
+import validate.ValidationError;
+import validate.ValidationErrorBuilder;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
