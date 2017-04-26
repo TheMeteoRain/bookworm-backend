@@ -137,7 +137,7 @@ public class BookController {
             headers.setLocation(linkTo(BookController.class).slash(deleteThisBook.getBookId()).toUri());
             response = new ResponseEntity(deleteThisBook, headers, HttpStatus.OK);
             
-            bookRepository.delete(bookId);
+            bookRepository.delete(deleteThisBook);
             Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
             deleteThisBook.add(allBooks);
         }
