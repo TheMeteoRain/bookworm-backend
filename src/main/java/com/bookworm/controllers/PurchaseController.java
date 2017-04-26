@@ -10,9 +10,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,14 +31,24 @@ public class PurchaseController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Purchase> getPurchases() {
-        HttpHeaders headers = new HttpHeaders();
         Iterable<Purchase> purchases = purchaseRepository.findAll();
         for (Purchase purchase : purchases) {
-            
+            Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(purchase.getPurchaseId())).withSelfRel();
+            Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBookId())).withRel("findBook");
+            purchase.add(selfLink);
+            purchase.add(bookLink);
         }
         
-        headers.setLocation(linkTo(PurchaseController.class).toUri());
-        
-        return new ResponseEntity(purchases, headers, HttpStatus.OK);
+        return new ResponseEntity(purchases, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET)
+    public ResponseEntity<Purchase> getPurchase(@PathVariable long purchaseId) {
+        Purchase purchase = purchaseRepository.findOne(purchaseId);
+        Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(purchase.getPurchaseId())).withSelfRel();
+        Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBookId())).withRel("findBook");
+        purchase.add(selfLink);
+        purchase.add(bookLink);
+        return new ResponseEntity(purchase, HttpStatus.OK);
     }
 }

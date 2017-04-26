@@ -52,11 +52,11 @@ public class Purchase extends ResourceSupport {
         this.memberId = memberId;
     }
 
-    public long getBook_id() {
+    public long getBookId() {
         return bookId;
     }
 
-    public void setBook_id(long bookId) {
+    public void setBookId(long bookId) {
         this.bookId = bookId;
     }
 
