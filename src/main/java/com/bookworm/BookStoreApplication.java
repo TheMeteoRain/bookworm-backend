@@ -39,7 +39,11 @@ public class BookStoreApplication {
         System.out.println("GET /members/{memberId}");
         System.out.println("TEHKÄÄ JOTAIN TÄHÄN TYYLIIN");
         System.out.println("");
-        
+
+        System.out.println("===== Review =====");
+        System.out.println("GET /books/{bookId}/reviews");
+        System.out.println("POST /books/{bookId}/reviews");
+
         System.out.println("===== USE THESE USERS (username:password) =====");
         System.out.println("admin:admin");
         System.out.println("jeppe:jeppe");
