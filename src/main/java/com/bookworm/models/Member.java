@@ -5,19 +5,19 @@
  */
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author Akash
  */
 @Entity
-@Table(name="member")
+@Table(name = "member")
 public class Member {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+
     private long id;
     private String email;
     private String username;
@@ -25,11 +25,9 @@ public class Member {
     private Set<Review> reviews;
 
 
-    @Transient
     private boolean isAdmin = false;
 
     public Member() {
-        
     }
 
     public Member(long id, String username, String password, String email) {
@@ -39,6 +37,8 @@ public class Member {
         this.email = email;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -76,16 +76,18 @@ public class Member {
         this.isAdmin = isAdmin;
     }
 
+    @Transient
     public boolean isAdmin() {
         return isAdmin;
     }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     public Set<Review> getReviews() {
         return reviews;
     }
 
-    public void setBookPublishers(Set<Review> reviews) {
+    public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
 }

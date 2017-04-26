@@ -1,14 +1,15 @@
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name="book")
 public class Book {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+
     private long id;
     private long publisherId;
     private String title;
@@ -22,7 +23,6 @@ public class Book {
     private Set<Review> reviews;
 
     public Book() {
-        
     }
 
     public Book(long id, long publisherId, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
@@ -38,6 +38,8 @@ public class Book {
         this.isbn = isbn;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -119,11 +121,12 @@ public class Book {
     }
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     public Set<Review> getReviews() {
         return reviews;
     }
 
-    public void setBookPublishers(Set<Review> reviews) {
+    public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
 }
