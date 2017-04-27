@@ -1,19 +1,18 @@
 package com.bookworm.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -27,8 +26,10 @@ public class Book extends ResourceSupport {
     
     private long bookId;
     
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonManagedReference
+    private List<Author> authors;
+    //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+    //@JsonIdentityReference(alwaysAsId = true)
     private Publisher publisher;
 
     @NotNull(message = "Title may not be empty")
@@ -61,7 +62,8 @@ public class Book extends ResourceSupport {
         
     }
 
-    public Book(Publisher publisher, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
+    public Book(List<Author> authors, Publisher publisher, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
+        this.authors = authors;
         this.publisher = publisher;
         this.title = title;
         this.description = description;
@@ -81,6 +83,16 @@ public class Book extends ResourceSupport {
 
     public void setBookId(long bookId) {
         this.bookId = bookId;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId", referencedColumnName = "authorId"))
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     @ManyToOne

@@ -5,10 +5,13 @@
  */
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -20,11 +23,11 @@ import org.springframework.hateoas.ResourceSupport;
 @Table(name="author")
 public class Author extends ResourceSupport {
     
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private long authorId;
     private String first_name;
     private String last_name;
+    @JsonBackReference
+    private List<Book> book_author;
     
     public Author() {
         
@@ -35,6 +38,8 @@ public class Author extends ResourceSupport {
         this.last_name = last_name;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public long getAuthorId() {
         return authorId;
     }
@@ -57,6 +62,15 @@ public class Author extends ResourceSupport {
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
+    }
+
+    @ManyToMany(mappedBy = "authors")
+    public List<Book> getBook_author() {
+        return book_author;
+    }
+
+    public void setBook_author(List<Book> book_author) {
+        this.book_author = book_author;
     }
     
     

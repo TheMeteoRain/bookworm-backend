@@ -36,7 +36,7 @@ public class PurchaseController {
         Iterable<Purchase> purchases = purchaseRepository.findAll();
         for (Purchase purchase : purchases) {
             Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(purchase.getPurchaseId())).withSelfRel();
-            Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBookId())).withRel("findBook");
+            Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBook().getBookId())).withRel("findBook");
             purchase.add(selfLink);
             purchase.add(bookLink);
         }
@@ -46,11 +46,18 @@ public class PurchaseController {
     
     @RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET)
     public ResponseEntity<Purchase> getPurchase(@PathVariable long purchaseId) {
-        Purchase purchase = purchaseRepository.findOne(purchaseId);
-        Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(purchase.getPurchaseId())).withSelfRel();
-        Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBookId())).withRel("findBook");
-        purchase.add(selfLink);
-        purchase.add(bookLink);
-        return new ResponseEntity(purchase, HttpStatus.OK);
+        Purchase findThisPurchase = purchaseRepository.findOne(purchaseId);
+        ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
+        
+        if (findThisPurchase != null) {
+            response = new ResponseEntity(findThisPurchase, HttpStatus.OK);
+            
+            Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(findThisPurchase.getPurchaseId())).withSelfRel();
+            Link bookLink = linkTo(methodOn(BookController.class).getBook(findThisPurchase.getBook().getBookId())).withRel("findBook");
+            findThisPurchase.add(selfLink);
+            findThisPurchase.add(bookLink);
+        }
+        
+        return response;
     }
 }

@@ -79,7 +79,6 @@ public class Publisher extends ResourceSupport {
     }
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
-   // @JsonManagedReference
     @JsonIgnore
     public List<Book> getBooks() {
         return books;

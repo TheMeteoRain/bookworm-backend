@@ -2,8 +2,10 @@ package com.bookworm.controllers;
 
 import com.bookworm.models.*;
 import com.bookworm.repositories.BookRepository;
+import com.bookworm.repositories.MemberRepository;
 import com.bookworm.repositories.PurchaseRepository;
 import com.bookworm.security.AuthenticatedUser;
+import com.fasterxml.jackson.annotation.JsonView;
 import javax.annotation.Resource;
 import validate.ValidationError;
 import validate.ValidationErrorBuilder;
@@ -42,6 +44,9 @@ public class BookController {
     @Autowired
     PurchaseRepository purchaseRepository;
     
+    @Autowired
+    MemberRepository memberRepository;
+    
     public BookController() {
         
     }
@@ -71,7 +76,6 @@ public class BookController {
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
         
         if (findThisBook != null) {
-            //findThisBook.setPublisher(findThisBook.getPublisher());
             response = new ResponseEntity(findThisBook, HttpStatus.OK);
             
             Link selfLink = linkTo(BookController.class).slash(findThisBook.getBookId()).withSelfRel();
@@ -79,14 +83,14 @@ public class BookController {
             findThisBook.add(selfLink);
             findThisBook.add(buyLink);
         }
-        System.out.println(findThisBook.getPublisher().getName());
+        
         return response;
     }
     
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> saveBook(@Validated @RequestBody Book c) {
+    public ResponseEntity<Book> saveBook(@Validated @RequestBody Book book) {
         HttpHeaders headers = new HttpHeaders();
-        Book saveThisBook = bookRepository.save(c);
+        Book saveThisBook = bookRepository.save(book);
         
         Link selfLink = linkTo(BookController.class).slash(saveThisBook.getBookId()).withSelfRel();
         Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
@@ -101,14 +105,14 @@ public class BookController {
     @Transactional
     @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> buyBook(@PathVariable long bookId, @RequestBody int amount) {
+        System.out.println("asdasd");
         AuthenticatedUser member = AuthenticatedUser.fromRequest(request);
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
         Book buyThisBook = bookRepository.findOne(bookId);
-        Purchase newPurchase = new Purchase();
         
         if (buyThisBook != null) {
-            newPurchase = new Purchase(member.id, buyThisBook.getBookId(), amount);
+            Purchase newPurchase = new Purchase(memberRepository.findOne(member.id), buyThisBook, amount);
             headers.setLocation(linkTo(PurchaseController.class).slash(newPurchase.getPurchaseId()).toUri());
             response = new ResponseEntity(newPurchase, headers, HttpStatus.CONFLICT);
             
@@ -118,7 +122,7 @@ public class BookController {
                 purchaseRepository.save(newPurchase);
                 Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(newPurchase.getPurchaseId())).withSelfRel();
                 Link allPurchases = linkTo(methodOn(PurchaseController.class).getPurchases()).withRel("allPurchases");
-                Link bookLink = linkTo(methodOn(BookController.class).getBook(newPurchase.getBookId())).withRel("findBook");
+                Link bookLink = linkTo(methodOn(BookController.class).getBook(buyThisBook.getBookId())).withRel("findBook");
                 newPurchase.add(selfLink);
                 newPurchase.add(allPurchases);
                 newPurchase.add(bookLink);

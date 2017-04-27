@@ -5,6 +5,7 @@
  */
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -52,6 +53,7 @@ public class Member extends ResourceSupport {
         this.username = username;
     }
 
+     @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -73,6 +75,7 @@ public class Member extends ResourceSupport {
         this.isAdmin = isAdmin;
     }
 
+    @JsonIgnore
     public boolean isAdmin() {
         return isAdmin;
     }
