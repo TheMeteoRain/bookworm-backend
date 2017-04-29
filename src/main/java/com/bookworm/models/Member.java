@@ -84,6 +84,7 @@ public class Member extends ResourceSupport {
     }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "reviewToMemberReference")
     public Set<Review> getReviews() {
         return reviews;
     }
