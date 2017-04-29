@@ -6,7 +6,14 @@
 package com.bookworm.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,21 +28,23 @@ import org.springframework.hateoas.ResourceSupport;
  */
 @Entity
 @Table(name="author")
-public class Author extends ResourceSupport {
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property = "authorId", scope = Author.class)
+public class Author extends ResourceSupport implements Serializable {
     
     private long authorId;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     @JsonBackReference
-    private List<Book> book_author;
+    //@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property = "bookId")
+    private List<Book> bookAuthor = new ArrayList<>();
     
     public Author() {
         
     }
 
-    public Author(String first_name, String last_name) {
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     @Id
@@ -48,30 +57,49 @@ public class Author extends ResourceSupport {
         this.authorId = authorId;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @ManyToMany(mappedBy = "authors")
-    public List<Book> getBook_author() {
-        return book_author;
+    public List<Book> getBookAuthor() {
+        return new ArrayList<>(bookAuthor);
+
     }
 
-    public void setBook_author(List<Book> book_author) {
-        this.book_author = book_author;
+    public void setBookAuthor(List<Book> books) {
+        this.bookAuthor = new ArrayList<>(books);
     }
     
-    
+    public void addBookAuthor(Book book){
+
+        //avoid circular calls : assumes equals and hashcode implemented
+        if(! bookAuthor.contains(book)){
+            bookAuthor.add(book);
+            
+            book.addAuthor(this);
+        }
+    }
+
+    public void removeBookAuthor(Book book){
+
+        //avoid circular calls: assumes equals and hashcode implemented: 
+        if(bookAuthor.contains(book)){
+            bookAuthor.remove(book);
+            
+            book.removeAuthor(this);
+        }
+    }
 }

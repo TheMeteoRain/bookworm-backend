@@ -1,11 +1,14 @@
 package com.bookworm.controllers;
 
 import com.bookworm.models.*;
+import com.bookworm.repositories.AuthorRepository;
 import com.bookworm.repositories.BookRepository;
 import com.bookworm.repositories.MemberRepository;
+import com.bookworm.repositories.PublisherRepository;
 import com.bookworm.repositories.PurchaseRepository;
 import com.bookworm.security.AuthenticatedUser;
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.List;
 import javax.annotation.Resource;
 import validate.ValidationError;
 import validate.ValidationErrorBuilder;
@@ -47,11 +50,17 @@ public class BookController {
     @Autowired
     MemberRepository memberRepository;
     
+    @Autowired
+    AuthorRepository authorRepository;
+    
+    @Autowired
+    PublisherRepository publisherRepository;
+    
     public BookController() {
         
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> getBooks() {
         Iterable<Book> books = bookRepository.findAll();
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -70,7 +79,7 @@ public class BookController {
         return response;
     }
 
-    @RequestMapping(value = "/{bookId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{bookId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> getBook(@PathVariable long bookId) {
         Book findThisBook = bookRepository.findOne(bookId);
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -87,9 +96,24 @@ public class BookController {
         return response;
     }
     
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> saveBook(@Validated @RequestBody Book book) {
         HttpHeaders headers = new HttpHeaders();
+        
+        List<Author> authors;
+        if ((authors = book.getAuthors()).size() > 0) {
+            for (Author author : authors) {
+                Author findAuthor = authorRepository.findOne(author.getAuthorId());
+                author.setFirstName(findAuthor.getFirstName());
+                author.setLastName(findAuthor.getLastName());
+            }
+        }
+        
+        Publisher publisher;
+        if ((publisher = publisherRepository.findOne(book.getPublisher().getPublisherId())) != null) {
+            book.setPublisher(publisher);
+        }
+        
         Book saveThisBook = bookRepository.save(book);
         
         Link selfLink = linkTo(BookController.class).slash(saveThisBook.getBookId()).withSelfRel();
@@ -135,7 +159,7 @@ public class BookController {
         return response;
     }
 
-    @RequestMapping(value = "/{bookId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{bookId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> deleteBook(@PathVariable long bookId) {
         HttpHeaders headers = new HttpHeaders();
         Book deleteThisBook = bookRepository.findOne(bookId);

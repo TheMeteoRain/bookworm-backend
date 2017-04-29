@@ -10,6 +10,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class PurchaseController {
         
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> getPurchases() {
         Iterable<Purchase> purchases = purchaseRepository.findAll();
         ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -52,7 +53,7 @@ public class PurchaseController {
         return response;
     }
     
-    @RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> getPurchase(@PathVariable long purchaseId) {
         Purchase findThisPurchase = purchaseRepository.findOne(purchaseId);
         ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
