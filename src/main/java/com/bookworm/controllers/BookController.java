@@ -103,7 +103,7 @@ public class BookController {
     }
     
     @Transactional
-    @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> buyBook(@PathVariable long bookId, @RequestBody int amount) {
         System.out.println("asdasd");
         AuthenticatedUser member = AuthenticatedUser.fromRequest(request);
@@ -114,7 +114,6 @@ public class BookController {
         if (buyThisBook != null) {
             Purchase newPurchase = new Purchase(memberRepository.findOne(member.id), buyThisBook, amount);
             headers.setLocation(linkTo(PurchaseController.class).slash(newPurchase.getPurchaseId()).toUri());
-            response = new ResponseEntity(newPurchase, headers, HttpStatus.CONFLICT);
             
             if (buyThisBook.getStock() - amount >= 0) {
                 response = new ResponseEntity(newPurchase, headers, HttpStatus.CREATED);
@@ -123,9 +122,13 @@ public class BookController {
                 Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(newPurchase.getPurchaseId())).withSelfRel();
                 Link allPurchases = linkTo(methodOn(PurchaseController.class).getPurchases()).withRel("allPurchases");
                 Link bookLink = linkTo(methodOn(BookController.class).getBook(buyThisBook.getBookId())).withRel("findBook");
+                Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
                 newPurchase.add(selfLink);
                 newPurchase.add(allPurchases);
                 newPurchase.add(bookLink);
+                newPurchase.add(allBooks);
+            } else {
+                response = new ResponseEntity("{\"message\": \"You cannot buy more than there is stock\"}", headers, HttpStatus.CONFLICT);
             }
         }
         

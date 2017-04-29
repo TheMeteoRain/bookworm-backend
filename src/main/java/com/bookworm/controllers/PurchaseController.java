@@ -34,14 +34,22 @@ public class PurchaseController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Purchase> getPurchases() {
         Iterable<Purchase> purchases = purchaseRepository.findAll();
-        for (Purchase purchase : purchases) {
-            Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(purchase.getPurchaseId())).withSelfRel();
-            Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBook().getBookId())).withRel("findBook");
-            purchase.add(selfLink);
-            purchase.add(bookLink);
+        ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
+        
+        if (purchases != null) {
+            response = new ResponseEntity(purchases, HttpStatus.OK);
+            
+            for (Purchase purchase : purchases) {
+                Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(purchase.getPurchaseId())).withSelfRel();
+                Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBook().getBookId())).withRel("findBook");
+                Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+                purchase.add(selfLink);
+                purchase.add(bookLink);
+                purchase.add(allBooks);
+            }
         }
         
-        return new ResponseEntity(purchases, HttpStatus.OK);
+        return response;
     }
     
     @RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET)
@@ -54,8 +62,10 @@ public class PurchaseController {
             
             Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(findThisPurchase.getPurchaseId())).withSelfRel();
             Link bookLink = linkTo(methodOn(BookController.class).getBook(findThisPurchase.getBook().getBookId())).withRel("findBook");
+            Link allPurchases = linkTo(methodOn(PurchaseController.class).getPurchases()).withRel("allPurchases");
             findThisPurchase.add(selfLink);
             findThisPurchase.add(bookLink);
+            findThisPurchase.add(allPurchases);
         }
         
         return response;
