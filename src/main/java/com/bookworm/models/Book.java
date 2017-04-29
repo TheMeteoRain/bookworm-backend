@@ -1,15 +1,9 @@
 package com.bookworm.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,11 +25,8 @@ public class Book extends ResourceSupport implements Serializable {
     
     private long bookId;
     
-    //@JsonManagedReference
-    //@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property = "authorId")
     private List<Author> authors = new ArrayList<>();
-    //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
-    //@JsonIdentityReference(alwaysAsId = true)
+
     private Publisher publisher;
 
     @NotNull(message = "Title may not be empty")
@@ -102,26 +93,20 @@ public class Book extends ResourceSupport implements Serializable {
     }
     
     public void addAuthor(Author author){
+        if(! authors.contains(author)){
+            authors.add(author);
 
-    //assumes equals and hashcode implemented: avoid circular calls
-    if(! authors.contains(author)){
-        authors.add(author);
-
-        //add method to Product : sets 'other side' of association
-        author.addBookAuthor(this);
+            author.addBookAuthor(this);
+        }
     }
-}
 
-public void removeAuthor(Author author){
+    public void removeAuthor(Author author){
+        if(! authors.contains(author)){
+            authors.remove(author);
 
-    //assumes equals and hashcode implemented: avoid circular calls
-    if(! authors.contains(author)){
-        authors.remove(author);
-
-        //add method to Product : sets 'other side' of association
-        author.removeBookAuthor(this);
+            author.removeBookAuthor(this);
+        }
     }
-}
 
     @ManyToOne
     @JoinColumn(name = "publisherId", referencedColumnName = "publisherId")

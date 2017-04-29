@@ -6,14 +6,9 @@
 package com.bookworm.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,14 +23,12 @@ import org.springframework.hateoas.ResourceSupport;
  */
 @Entity
 @Table(name="author")
-//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property = "authorId", scope = Author.class)
 public class Author extends ResourceSupport implements Serializable {
     
     private long authorId;
     private String firstName;
     private String lastName;
     @JsonBackReference
-    //@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property = "bookId")
     private List<Book> bookAuthor = new ArrayList<>();
     
     public Author() {
@@ -84,8 +77,6 @@ public class Author extends ResourceSupport implements Serializable {
     }
     
     public void addBookAuthor(Book book){
-
-        //avoid circular calls : assumes equals and hashcode implemented
         if(! bookAuthor.contains(book)){
             bookAuthor.add(book);
             
@@ -94,8 +85,6 @@ public class Author extends ResourceSupport implements Serializable {
     }
 
     public void removeBookAuthor(Book book){
-
-        //avoid circular calls: assumes equals and hashcode implemented: 
         if(bookAuthor.contains(book)){
             bookAuthor.remove(book);
             

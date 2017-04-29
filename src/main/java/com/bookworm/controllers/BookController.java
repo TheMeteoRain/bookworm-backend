@@ -7,7 +7,6 @@ import com.bookworm.repositories.MemberRepository;
 import com.bookworm.repositories.PublisherRepository;
 import com.bookworm.repositories.PurchaseRepository;
 import com.bookworm.security.AuthenticatedUser;
-import com.fasterxml.jackson.annotation.JsonView;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
