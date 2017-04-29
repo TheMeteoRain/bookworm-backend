@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import org.springframework.hateoas.ResourceSupport;
 
 /**
  * Created by tonis on 2017-04-25.
  */
 @Entity
 @Table(name = "review")
-public class Review implements Serializable {
+public class Review extends ResourceSupport implements Serializable {
 
     private Book book;
     private Member member;
@@ -30,8 +31,8 @@ public class Review implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JoinColumn(name = "bookId", referencedColumnName = "bookId")
+    @JsonBackReference(value = "reviewToBookReference")
     public Book getBook() {
         return book;
     }
@@ -42,8 +43,8 @@ public class Review implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JoinColumn(name = "memberId", referencedColumnName = "memberId")
+    @JsonBackReference(value = "reviewToMemberReference")
     public Member getMember() {
         return member;
     }
@@ -72,8 +73,8 @@ public class Review implements Serializable {
     public int hashCode() {
         final int prime = 31;
         long result = 1;
-        result = prime * result + book.getId();
-        result = prime * result + member.getId();
+        result = prime * result + book.getBookId();
+        result = prime * result + member.getMemberId();
         return (int)result;
     }
 
@@ -86,9 +87,9 @@ public class Review implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         Review other = (Review) obj;
-        if (book.getId() != other.book.getId())
+        if (book.getBookId()!= other.book.getBookId())
             return false;
-        if (member.getId() != other.member.getId())
+        if (member.getMemberId()!= other.member.getMemberId())
             return false;
         return true;
     }

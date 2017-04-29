@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import org.springframework.hateoas.ResourceSupport;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,7 +37,7 @@ public class Member extends ResourceSupport {
         this.email = email;
     }
 
-  @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long getMemberId() {
         return memberId;
@@ -56,7 +55,7 @@ public class Member extends ResourceSupport {
         this.username = username;
     }
 
-     @JsonIgnore
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -85,7 +84,7 @@ public class Member extends ResourceSupport {
     }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "reviewToMemberReference")
     public Set<Review> getReviews() {
         return reviews;
     }
