@@ -2,7 +2,7 @@ SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS publisher;
 CREATE TABLE publisher (
-    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `publisher_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(150) NOT NULL,
     `country` VARCHAR(255),
     `city` VARCHAR(255)
@@ -11,7 +11,7 @@ CREATE TABLE publisher (
 
 DROP TABLE IF EXISTS author;
 CREATE TABLE author (
-    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `author_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `first_name` VARCHAR(100) NOT NULL,
     `last_name` VARCHAR(100) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -19,18 +19,18 @@ CREATE TABLE author (
 
 DROP TABLE IF EXISTS book;
 CREATE TABLE book (
-    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `book_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `publisher_id` INT UNSIGNED,
     `title` VARCHAR(255) NOT NULL,
     `description` TEXT,
     `genre` VARCHAR(150) NOT NULL,
     `format` VARCHAR(150)  NOT NULL,
     `price` DECIMAL(5,2) NOT NULL,
-    `stock` SMALLINT NOT NULL,
+    `stock` SMALLINT UNSIGNED NOT NULL,
     `pages` SMALLINT UNSIGNED NOT NULL,
     `isbn` VARCHAR(15) NOT NULL,
 
-    CONSTRAINT `fk_book_publisher` FOREIGN KEY (`publisher_id`) REFERENCES `publisher`(`id`) ON UPDATE CASCADE ON DELETE SET NULL
+    CONSTRAINT `fk_book_publisher` FOREIGN KEY (`publisher_id`) REFERENCES `publisher`(`publisher_id`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
@@ -40,14 +40,14 @@ CREATE TABLE book_author (
     `book_id` INT UNSIGNED,
 
     PRIMARY KEY (`author_id`, `book_id`),
-    CONSTRAINT `fk_bookauthor_author` FOREIGN KEY (`author_id`) REFERENCES `author`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT `fk_bookauthor_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT `fk_bookauthor_author` FOREIGN KEY (`author_id`) REFERENCES `author`(`author_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_bookauthor_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`book_id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS member;
 CREATE TABLE member (
-    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `member_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(100) NOT NULL,
     `email` VARCHAR(150) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
@@ -65,20 +65,20 @@ CREATE TABLE review (
     `stars` DECIMAL(3,2) NOT NULL,
 
     PRIMARY KEY (`member_id`, `book_id`),
-    CONSTRAINT `fk_review_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT `fk_review_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT `fk_review_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`member_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_review_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`book_id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS purchase;
 CREATE TABLE purchase (
-    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `purchase_id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `member_id` INT UNSIGNED NOT NULL,
     `book_id` INT UNSIGNED NOT NULL,
     `amount` TINYINT UNSIGNED NOT NULL,
 
-    CONSTRAINT `fk_purchase_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT `fk_purchase_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT `fk_purchase_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`member_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_purchase_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`book_id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
@@ -88,8 +88,8 @@ CREATE TABLE notification (
     `member_id` INT UNSIGNED,
 
     PRIMARY KEY (`member_id`, `book_id`),
-    CONSTRAINT `fk_notification_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT `fk_notification_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT `fk_notification_member` FOREIGN KEY (`member_id`) REFERENCES `member`(`member_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT `fk_notification_book` FOREIGN KEY (`book_id`) REFERENCES `book`(`book_id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 

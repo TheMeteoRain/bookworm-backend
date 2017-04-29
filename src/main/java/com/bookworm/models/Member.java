@@ -5,8 +5,10 @@
  */
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import org.springframework.hateoas.ResourceSupport;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,10 +17,10 @@ import java.util.Set;
  * @author Akash
  */
 @Entity
-@Table(name = "member")
-public class Member {
-
-    private long id;
+@Table(name="member")
+public class Member extends ResourceSupport {
+    
+    private long memberId;
     private String email;
     private String username;
     private String password;
@@ -30,21 +32,20 @@ public class Member {
     public Member() {
     }
 
-    public Member(long id, String username, String password, String email) {
-        this.id = id;
+    public Member(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    @Id
+  @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getId() {
-        return id;
+    public long getMemberId() {
+        return memberId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMemberId(long memberId) {
+        this.memberId = memberId;
     }
 
     public String getUsername() {
@@ -55,6 +56,7 @@ public class Member {
         this.username = username;
     }
 
+     @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -76,6 +78,7 @@ public class Member {
         this.isAdmin = isAdmin;
     }
 
+    @JsonIgnore
     @Transient
     public boolean isAdmin() {
         return isAdmin;

@@ -10,7 +10,7 @@ public class TokenService {
     public static String createToken(Member member) {
 
         Claims claims = Jwts.claims().setSubject(member.getUsername());
-        claims.put("id", member.getId());
+        claims.put("id", member.getMemberId());
         claims.put("username", member.getUsername());
         claims.put("admin", member.isAdmin());
         return "Bearer " +  Jwts.builder()
