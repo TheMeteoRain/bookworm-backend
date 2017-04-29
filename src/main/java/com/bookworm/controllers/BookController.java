@@ -8,6 +8,7 @@ import com.bookworm.repositories.PublisherRepository;
 import com.bookworm.repositories.PurchaseRepository;
 import com.bookworm.security.AuthenticatedUser;
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import validate.ValidationError;
@@ -102,11 +103,12 @@ public class BookController {
         
         List<Author> authors;
         if ((authors = book.getAuthors()).size() > 0) {
+            List<Author> newAuthors = new ArrayList<>();
             for (Author author : authors) {
                 Author findAuthor = authorRepository.findOne(author.getAuthorId());
-                author.setFirstName(findAuthor.getFirstName());
-                author.setLastName(findAuthor.getLastName());
+                newAuthors.add(findAuthor);
             }
+            book.setAuthors(newAuthors);
         }
         
         Publisher publisher;
@@ -129,7 +131,6 @@ public class BookController {
     @Transactional
     @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> buyBook(@PathVariable long bookId, @RequestBody int amount) {
-        System.out.println("asdasd");
         AuthenticatedUser member = AuthenticatedUser.fromRequest(request);
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
