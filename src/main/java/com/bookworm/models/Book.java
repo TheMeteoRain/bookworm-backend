@@ -1,5 +1,6 @@
 package com.bookworm.models;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -53,9 +54,10 @@ public class Book extends ResourceSupport {
     @NotBlank(message = "ISBN may not be empty")
     @Length(min = 10, max = 15, message = "ISBN length must be between 10 and 15")
     private String isbn;
-    
+  
+    private Set<Review> reviews;
+
     public Book() {
-        
     }
 
     public Book(Publisher publisher, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
@@ -179,5 +181,15 @@ public class Book extends ResourceSupport {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 }

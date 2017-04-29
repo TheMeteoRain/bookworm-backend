@@ -8,27 +8,28 @@ package com.bookworm.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import org.springframework.hateoas.ResourceSupport;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- *
  * @author Akash
  */
 @Entity
 @Table(name="member")
 public class Member extends ResourceSupport {
     
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private long memberId;
     private String email;
     private String username;
     private String password;
+    private Set<Review> reviews;
 
-    @Transient
+
     private boolean isAdmin = false;
 
     public Member() {
-        
     }
 
     public Member(String username, String password, String email) {
@@ -37,6 +38,8 @@ public class Member extends ResourceSupport {
         this.email = email;
     }
 
+  @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getMemberId() {
         return memberId;
     }
@@ -76,7 +79,18 @@ public class Member extends ResourceSupport {
     }
 
     @JsonIgnore
+    @Transient
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 }
