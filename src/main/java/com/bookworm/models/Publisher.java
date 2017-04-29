@@ -5,6 +5,7 @@
  */
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -76,12 +77,11 @@ public class Publisher extends ResourceSupport {
     }
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @JsonBackReference(value = "publisherToBookReference")
     public List<Book> getBooks() {
         return books;
     }
     
-    @JsonProperty
     public void setBooks(List<Book> books) {
         this.books = books;
     }

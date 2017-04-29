@@ -1,8 +1,12 @@
 package com.bookworm.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -46,7 +51,8 @@ public class Book extends ResourceSupport {
     @Min(value = 5, message = "Price must be greater than or equal to 5")
     private double price;
     
-    private int stock;
+    @Min(value = 0, message = "Stock must be greater than or equal to 0")
+    private int stock = 0;
     
     @Min(value = 1, message = "Pages must be greater than or equal to 1")
     private int pages;
@@ -55,13 +61,13 @@ public class Book extends ResourceSupport {
     @Length(min = 10, max = 15, message = "ISBN length must be between 10 and 15")
     private String isbn;
   
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
 
     public Book() {
     }
 
-    public Book(Publisher publisher, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
-        //setAuthors(authors);
+    public Book(List<Author> authors, Publisher publisher, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
+        setAuthors(authors);
         this.publisher = publisher;
         this.title = title;
         this.description = description;
@@ -85,6 +91,7 @@ public class Book extends ResourceSupport {
 
     @ManyToMany
     @JoinTable(name = "bookAuthor", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId", referencedColumnName = "authorId"))
+    //@JsonManagedReference(value = "authorToBookReference")
     public List<Author> getAuthors() {
         return new ArrayList<>(authors);
     }
@@ -111,6 +118,7 @@ public class Book extends ResourceSupport {
 
     @ManyToOne
     @JoinColumn(name = "publisherId", referencedColumnName = "publisherId")
+    //@JsonManagedReference(value = "publisherToBookReference")
     public Publisher getPublisher() {
         return publisher;
     }
@@ -184,7 +192,7 @@ public class Book extends ResourceSupport {
     }
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "reviewToBookReference")
     public Set<Review> getReviews() {
         return reviews;
     }

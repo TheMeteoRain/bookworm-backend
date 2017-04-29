@@ -27,7 +27,6 @@ public class Author extends ResourceSupport {
     private long authorId;
     private String firstName;
     private String lastName;
-    @JsonBackReference
     private List<Book> bookAuthor = new ArrayList<>();
     
     public Author() {
@@ -66,6 +65,7 @@ public class Author extends ResourceSupport {
     }
 
     @ManyToMany(mappedBy = "authors")
+    @JsonBackReference(value = "authorToBookReference")
     public List<Book> getBookAuthor() {
         return new ArrayList<>(bookAuthor);
 

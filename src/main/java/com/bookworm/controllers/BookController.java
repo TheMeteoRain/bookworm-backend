@@ -70,9 +70,11 @@ public class BookController {
             
             for (Book book : books) {
                 Link selfLink = linkTo(BookController.class).slash(book.getBookId()).withSelfRel();
-                Link buyLink = linkTo(methodOn(BookController.class).buyBook(book.getBookId(), 1)).withRel("buyBook");
+                Link buyLink = linkTo(methodOn(BookController.class).buyBook(book.getBookId(), 0)).withRel("buyBook");
+                Link reviewLink = linkTo(methodOn(ReviewController.class).saveReview(book.getBookId(), null)).withRel("saveReview");
                 book.add(selfLink);
                 book.add(buyLink);
+                book.add(reviewLink);
             }
         }
         
@@ -88,7 +90,7 @@ public class BookController {
             response = new ResponseEntity(findThisBook, HttpStatus.OK);
             
             Link selfLink = linkTo(BookController.class).slash(findThisBook.getBookId()).withSelfRel();
-            Link buyLink = linkTo(methodOn(BookController.class).buyBook(findThisBook.getBookId(), 1)).withRel("buyBook");
+            Link buyLink = linkTo(methodOn(BookController.class).buyBook(findThisBook.getBookId(), 0)).withRel("buyBook");
             findThisBook.add(selfLink);
             findThisBook.add(buyLink);
         }
@@ -130,13 +132,13 @@ public class BookController {
     @Transactional
     @RequestMapping(value="/{bookId}/buy", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> buyBook(@PathVariable long bookId, @RequestBody int amount) {
-        AuthenticatedUser member = AuthenticatedUser.fromRequest(request);
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
+        Member findThisMember = memberRepository.findOne(AuthenticatedUser.fromRequest(request).id);
         Book buyThisBook = bookRepository.findOne(bookId);
         
         if (buyThisBook != null) {
-            Purchase newPurchase = new Purchase(memberRepository.findOne(member.id), buyThisBook, amount);
+            Purchase newPurchase = new Purchase(findThisMember, buyThisBook, amount);
             headers.setLocation(linkTo(PurchaseController.class).slash(newPurchase.getPurchaseId()).toUri());
             
             if (buyThisBook.getStock() - amount >= 0) {
