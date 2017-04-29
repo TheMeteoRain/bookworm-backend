@@ -6,7 +6,6 @@
 package com.bookworm.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -23,7 +22,7 @@ import org.springframework.hateoas.ResourceSupport;
  */
 @Entity
 @Table(name="author")
-public class Author extends ResourceSupport implements Serializable {
+public class Author extends ResourceSupport {
     
     private long authorId;
     private String firstName;

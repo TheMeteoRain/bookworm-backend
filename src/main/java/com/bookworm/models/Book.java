@@ -1,6 +1,5 @@
 package com.bookworm.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ import org.springframework.hateoas.ResourceSupport;
  
 @Entity
 @Table(name="book")
-public class Book extends ResourceSupport implements Serializable {
+public class Book extends ResourceSupport {
     
     private long bookId;
     
