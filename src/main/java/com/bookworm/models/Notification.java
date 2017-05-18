@@ -11,42 +11,25 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by tonis on 2017-04-25.
  */
 @Entity
-@Table(name = "review")
-public class Review extends ResourceSupport implements Serializable {
+@Table(name = "notification")
+@IdClass(NotificationId.class)
+public class Notification extends ResourceSupport {
 
     private Book book;
     private Member member;
-    private String text;
-    private double stars;
 
-    public Review() {
+    public Notification() {
     }
 
-    public Review(Book book, Member member, String text, double stars) {
+    public Notification(Book book, Member member) {
         this.book = book;
         this.member = member;
-        this.text = text;
-        this.stars = stars;
-    }
-
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "bookId", referencedColumnName = "bookId")
-   // @JsonBackReference(value = "reviewToBookReference")
-    @JsonIgnore
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
     }
 
     @Id
     @ManyToOne
     @JoinColumn(name = "memberId", referencedColumnName = "memberId")
-    //@JsonBackReference(value = "reviewToMemberReference")
+   // @JsonBackReference(value = "notificationToMemberReference")
     public Member getMember() {
         return member;
     }
@@ -55,22 +38,19 @@ public class Review extends ResourceSupport implements Serializable {
         this.member = member;
     }
 
-    public String getText() {
-        return text;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "bookId", referencedColumnName = "bookId")
+   // @JsonBackReference(value = "notificationToBookReference")
+    @JsonIgnore
+    public Book getBook() {
+        return book;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setBook(Book book) {
+        this.book = book;
     }
-
-    public double getStars() {
-        return stars;
-    }
-
-    public void setStars(double stars) {
-        this.stars = stars;
-    }
-
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -88,10 +68,10 @@ public class Review extends ResourceSupport implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Review other = (Review) obj;
-        if (book.getBookId()!= other.book.getBookId())
+        Notification other = (Notification) obj;
+        if (book.getBookId() != other.book.getBookId())
             return false;
-        if (member.getMemberId()!= other.member.getMemberId())
+        if (member.getMemberId() != other.member.getMemberId())
             return false;
         return true;
     }

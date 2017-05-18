@@ -19,6 +19,8 @@ public class DataLoader implements ApplicationRunner{
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-        authController.registerMember(new MemberRegisterDetails("admin", "admin", "admin"));
+        authController.registerMember(new MemberRegisterDetails("bookworm.mail.service@gmail.com", "admin", "admin"));
+        authController.registerMember(new MemberRegisterDetails("bookworm.mail.jeppe@gmail.com", "jeppe", "jeppe"));
+        authController.registerMember(new MemberRegisterDetails("bookworm.mail.jussi@gmail.com", "jussi", "jussi"));
     }
 }

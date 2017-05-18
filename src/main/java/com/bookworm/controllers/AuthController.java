@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
 
     @Autowired
-    MemberRepository database;
+    MemberRepository memberRepository;
 
     public AuthController() {
         
@@ -24,7 +24,7 @@ public class AuthController {
     @RequestMapping(value= "/login", method=RequestMethod.POST)
     public String login(@RequestBody LoginCredentials credentials, HttpServletResponse res) {
 
-        Member user = database.findFirstByUsername(credentials.getUsername());
+        Member user = memberRepository.findFirstByUsername(credentials.getUsername());
         if (user != null) {
             boolean valid = PasswordHasher.compare(credentials.getPassword(), user.getPassword());
             if (valid) {
@@ -59,7 +59,7 @@ public class AuthController {
         member.setPassword(hash);
 
         try {
-            database.save(member);
+            memberRepository.save(member);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

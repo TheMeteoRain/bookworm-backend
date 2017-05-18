@@ -31,23 +31,34 @@ public class BookStoreApplication {
         System.out.println("GET /books/{bookId}");
         System.out.println("POST /books");
         System.out.println("DELETE /books/[bookId}");
-        System.out.println("DELETE /books/{bookId}/stock");
+        System.out.println("PUT /books/{bookId}/buy");
+        System.out.println("PUT /books/{bookId}/add_stock");
+        System.out.println("");
+        
+        System.out.println("===== Review =====");
+        System.out.println("GET /books/{bookId}/reviews");
+        System.out.println("POST /books/{bookId}/reviews");
+        System.out.println("");
+
+        System.out.println("===== Notification =====");
+        System.out.println("GET /books/{bookId}/notifications");
+        System.out.println("POST /books/{bookId}/notifications");
+        System.out.println("");
+        
+        System.out.println("===== Purchase =====");
+        System.out.println("GET /purchases");
+        System.out.println("GET /purchases/{purchaseId}");
         System.out.println("");
         
         System.out.println("===== MEMBER =====");
         System.out.println("GET /members");
         System.out.println("GET /members/{memberId}");
-        System.out.println("TEHKÄÄ JOTAIN TÄHÄN TYYLIIN");
         System.out.println("");
 
-        System.out.println("===== Review =====");
-        System.out.println("GET /books/{bookId}/reviews");
-        System.out.println("POST /books/{bookId}/reviews");
-
-        System.out.println("===== USE THESE USERS (username:password) =====");
-        System.out.println("admin:admin");
-        System.out.println("jeppe:jeppe");
-        System.out.println("jussi:jussi");
+        System.out.println("===== USE THESE USERS (username:password | email:password) =====");
+        System.out.println("admin:admin  | bookworm.mail.service@gmail.com:mailservice");
+        System.out.println("jeppe:jeppe | bookworm.mail.jeppe@gmail.com:mailservice");
+        System.out.println("jussi:jussi | bookworm.mail.jussi@gmail.com:mailservice");
         System.out.println("");
         
         System.out.println("========== END ==========");

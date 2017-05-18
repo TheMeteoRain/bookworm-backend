@@ -1,6 +1,7 @@
 package com.bookworm.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,12 +63,12 @@ public class Book extends ResourceSupport {
     private String isbn;
   
     private Set<Review> reviews = new HashSet<>();
+    private Set<Notification> notifications = new HashSet<>();
 
     public Book() {
     }
 
     public Book(List<Author> authors, Publisher publisher, String title, String description, String genre, String format, double price, int stock, int pages, String isbn) {
-        setAuthors(authors);
         this.publisher = publisher;
         this.title = title;
         this.description = description;
@@ -192,7 +193,8 @@ public class Book extends ResourceSupport {
     }
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "reviewToBookReference")
+    //@JsonManagedReference(value = "reviewToBookReference")
+    @JsonIgnore
     public Set<Review> getReviews() {
         return reviews;
     }
@@ -200,4 +202,17 @@ public class Book extends ResourceSupport {
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JsonManagedReference(value = "notificationToBookReference")
+    @JsonIgnore
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+    
+    
 }
