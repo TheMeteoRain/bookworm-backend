@@ -41,11 +41,24 @@ public class PurchaseController {
             
             for (Purchase purchase : purchases) {
                 Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(purchase.getPurchaseId())).withSelfRel();
-                Link bookLink = linkTo(methodOn(BookController.class).getBook(purchase.getBook().getBookId())).withRel("findBook");
-                Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
                 purchase.add(selfLink);
-                purchase.add(bookLink);
-                purchase.add(allBooks);
+                
+                Link selfBookLink = linkTo(BookController.class).slash(purchase.getBook().getBookId()).withSelfRel();
+                Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+                Link buyLink = linkTo(methodOn(BookController.class).buyBook(purchase.getBook().getBookId(), 0)).withRel("buyBook");
+                Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(purchase.getBook().getBookId(), 0)).withRel("addStock");
+                Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(purchase.getBook().getBookId())).withRel("getReview");
+                Link setReviewLink = linkTo(methodOn(ReviewController.class).saveReview(purchase.getBook().getBookId(), null)).withRel("setReview");
+                Link getNotificationLink = linkTo(methodOn(NotificationController.class).getNotificationsByBook(purchase.getBook().getBookId())).withRel("getNotifications");
+                Link setNotificationLink = linkTo(methodOn(NotificationController.class).setNotification(purchase.getBook().getBookId())).withRel("setNotification");
+                purchase.getBook().add(selfBookLink);
+                purchase.getBook().add(allBooks);
+                purchase.getBook().add(buyLink);
+                purchase.getBook().add(addStockLink);
+                purchase.getBook().add(getReviewLink);
+                purchase.getBook().add(setReviewLink);
+                purchase.getBook().add(getNotificationLink);
+                purchase.getBook().add(setNotificationLink);
             }
         }
         
@@ -61,11 +74,24 @@ public class PurchaseController {
             response = new ResponseEntity(findThisPurchase, HttpStatus.OK);
             
             Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(findThisPurchase.getPurchaseId())).withSelfRel();
-            Link bookLink = linkTo(methodOn(BookController.class).getBook(findThisPurchase.getBook().getBookId())).withRel("findBook");
-            Link allPurchases = linkTo(methodOn(PurchaseController.class).getPurchases()).withRel("allPurchases");
             findThisPurchase.add(selfLink);
-            findThisPurchase.add(bookLink);
-            findThisPurchase.add(allPurchases);
+
+            Link selfBookLink = linkTo(BookController.class).slash(findThisPurchase.getBook().getBookId()).withSelfRel();
+            Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+            Link buyLink = linkTo(methodOn(BookController.class).buyBook(findThisPurchase.getBook().getBookId(), 0)).withRel("buyBook");
+            Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(findThisPurchase.getBook().getBookId(), 0)).withRel("addStock");
+            Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(findThisPurchase.getBook().getBookId())).withRel("getReview");
+            Link setReviewLink = linkTo(methodOn(ReviewController.class).saveReview(findThisPurchase.getBook().getBookId(), null)).withRel("setReview");
+            Link getNotificationLink = linkTo(methodOn(NotificationController.class).getNotificationsByBook(findThisPurchase.getBook().getBookId())).withRel("getNotifications");
+            Link setNotificationLink = linkTo(methodOn(NotificationController.class).setNotification(findThisPurchase.getBook().getBookId())).withRel("setNotification");
+            findThisPurchase.getBook().add(selfBookLink);
+            findThisPurchase.getBook().add(allBooks);
+            findThisPurchase.getBook().add(buyLink);
+            findThisPurchase.getBook().add(addStockLink);
+            findThisPurchase.getBook().add(getReviewLink);
+            findThisPurchase.getBook().add(setReviewLink);
+            findThisPurchase.getBook().add(getNotificationLink);
+            findThisPurchase.getBook().add(setNotificationLink);
         }
         
         return response;

@@ -5,6 +5,7 @@
  */
 package com.bookworm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,17 +24,17 @@ import org.springframework.hateoas.ResourceSupport;
 public class Purchase extends ResourceSupport {
     
     private long purchaseId;
+    private int amount;
     private Member member;
     private Book book;
-    private int amount;
 
     public Purchase() {
     }
 
     public Purchase(Member member, Book book, int amount) {
+        this.amount = amount;
         this.member = member;
         this.book = book;
-        this.amount = amount;
     }
 
     @Id
@@ -44,6 +45,14 @@ public class Purchase extends ResourceSupport {
 
     public void setPurchaseId(long purchaseId) {
         this.purchaseId = purchaseId;
+    }
+    
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @ManyToOne
@@ -62,18 +71,7 @@ public class Purchase extends ResourceSupport {
         return book;
     }
 
-   
     public void setBook(Book book) {
         this.book = book;
     }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-    
-    
 }

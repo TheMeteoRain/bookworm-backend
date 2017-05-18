@@ -24,6 +24,7 @@ public class Member extends ResourceSupport {
     private String username;
     private String password;
     private Set<Review> reviews;
+    private Set<Notification> notifications;
 
 
     private boolean isAdmin = false;
@@ -83,13 +84,25 @@ public class Member extends ResourceSupport {
         return isAdmin;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "reviewToMemberReference")
+    //@JsonManagedReference(value = "reviewToMemberReference")
     public Set<Review> getReviews() {
         return reviews;
     }
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+    
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    //@JsonManagedReference(value = "notificationToMemberReference")
+    @JsonIgnore
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
     }
 }

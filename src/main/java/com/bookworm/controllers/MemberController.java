@@ -34,11 +34,4 @@ public class MemberController {
     public Member getMember(@PathVariable long memberId) {
         return database.findOne(memberId);
     }
-    
-    @RequestMapping("/example")
-    public Member greeting() {
-        return new Member("a@b.c", "kayttaja", "salasana");
-    }
-
-
 }

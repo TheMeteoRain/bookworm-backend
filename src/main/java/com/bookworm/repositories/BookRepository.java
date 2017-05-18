@@ -10,4 +10,8 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Modifying(clearAutomatically = true) // http://codingexplained.com/coding/java/spring-framework/updating-entities-with-update-query-spring-data-jpa
     @Query("UPDATE Book b SET b.stock = b.stock - :amount WHERE b.id = :id")
     public void reduceStock(@Param("id") Long id, @Param("amount") int amount);
+    
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Book b SET b.stock = b.stock + :amount WHERE b.id = :id")
+    public void increaseStock(@Param("id") Long id, @Param("amount") int amount);
 }

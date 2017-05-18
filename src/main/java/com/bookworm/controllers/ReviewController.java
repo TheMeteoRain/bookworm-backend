@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController
 @RequestMapping(value = "books/{bookId}/reviews")
@@ -34,7 +35,7 @@ public class ReviewController {
     @Autowired
     BookRepository bookRepository;
 
-    @RequestMapping(method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getReviewsForBook(@PathVariable long bookId) {
         Set<Review> reviews = bookRepository.findOne(bookId).getReviews();
         ResponseEntity<Review> response = new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -43,7 +44,8 @@ public class ReviewController {
             response = new ResponseEntity(reviews, HttpStatus.OK);
             
             for (Review review : reviews) {
-                Link bookLink = linkTo(methodOn(BookController.class).buyBook(review.getBook().getBookId(), 1)).withRel("findBook");
+                System.out.println(review.getMember().getUsername());
+                Link bookLink = linkTo(methodOn(BookController.class).getBook(review.getBook().getBookId())).withRel("findBook");
                 review.add(bookLink);
             }
         }
@@ -51,6 +53,7 @@ public class ReviewController {
         return response;
     }
 
+    @Transactional
     @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Review> saveReview(@PathVariable long bookId, @RequestBody ReviewData rd) {
         HttpHeaders headers = new HttpHeaders();
@@ -64,12 +67,12 @@ public class ReviewController {
             
             boolean added = findThisBook.getReviews().add(saveThisReview);
             if (added) {
-                memberRepository.save(findThisMember);
-                bookRepository.save(findThisBook);
+               // memberRepository.save(findThisMember);
+               // bookRepository.save(findThisBook);
                 response = new ResponseEntity(saveThisReview, headers, HttpStatus.CREATED);
             } else {
                 // Member can't post multiple reviews for a single book
-                response = new ResponseEntity("{\"message\": \"Member can only review once per book\"}", headers, HttpStatus.CONFLICT);
+                response = new ResponseEntity("{\"code\": 409, \"status\": \"Conflict\", \"message\": \"Member can only review once per book\"}", headers, HttpStatus.CONFLICT);
             }
         }
 
