@@ -53,6 +53,11 @@ public class BookStoreApplication {
         System.out.println("GET /publishers?search=SEARCH_TERM");
         System.out.println("");
 
+        System.out.println("===== Author =====");
+        System.out.println("GET /authors");
+        System.out.println("GET /authors?search=SEARCH_TERM");
+        System.out.println("");
+
 
         System.out.println("===== Review =====");
         System.out.println("GET /books/{bookId}/reviews");
