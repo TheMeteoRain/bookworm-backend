@@ -280,9 +280,9 @@ public class BookController {
 
     @RequestMapping(value="/genre/{genre}", method=RequestMethod.GET)
     public Iterable<Book> searchByGenre(@PathVariable String genre) {
-        return bookRepository.findByGenreContainingAllIgnoreCase(genre);
+        return bookRepository.findByGenre(genre);
     }
-    
+
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ValidationError handleException(MethodArgumentNotValidException exception) {
