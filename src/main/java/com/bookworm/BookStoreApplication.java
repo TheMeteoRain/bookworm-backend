@@ -1,7 +1,5 @@
 package com.bookworm;
 
-import com.bookworm.controllers.AuthController;
-import com.bookworm.security.MemberRegisterDetails;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -34,7 +32,13 @@ public class BookStoreApplication {
         System.out.println("PUT /books/{bookId}/buy");
         System.out.println("PUT /books/{bookId}/add_stock");
         System.out.println("");
-        
+
+        System.out.println("===== Publisher =====");
+        System.out.println("GET /publishers");
+        System.out.println("GET /publishers?search=SEARCH_TERM");
+        System.out.println("");
+
+
         System.out.println("===== Review =====");
         System.out.println("GET /books/{bookId}/reviews");
         System.out.println("POST /books/{bookId}/reviews");
