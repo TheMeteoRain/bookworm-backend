@@ -28,6 +28,7 @@ public class BookStoreApplication {
         System.out.println("GET /books");
         System.out.println("GET /books/{bookId}");
         System.out.println("GET /books/search/{searchWord}");
+        System.out.println("GET /books/genre/{genre}");
         System.out.println("POST /books");
         System.out.println("DELETE /books/[bookId}");
         System.out.println("PUT /books/{bookId}/buy");
