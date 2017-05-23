@@ -7,6 +7,13 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * 
+ * @version 2017.0522
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @since 1.7
+ */
 @Component
 public class DataLoader implements ApplicationRunner{
 

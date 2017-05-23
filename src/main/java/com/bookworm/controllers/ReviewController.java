@@ -16,25 +16,49 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.hateoas.Link;
 import java.util.Set;
 import javax.annotation.Resource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Class that handles all basic review API endpoints GET and POST.
+ * 
+ * @version 2017.0522
+ * @author Akash Singh akash.singh@cs.tamk.fi
+ * @since 1.7
+ */
 @RestController
+@Scope("singleton")
 @RequestMapping(value = "books/{bookId}/reviews")
 public class ReviewController {
 
+    /**
+     * Defines an object to provide client request information to a servlet.
+     */
     @Resource
     private HttpServletRequest request;
     
+    /**
+     * Member repository.
+     */
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
+    /**
+     * Book repository.
+     */
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
+    /**
+     * Fetch all reviews for the given book by book id.
+     * 
+     * @param bookId book's id.
+     * @return array of reviews as json.
+     */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getReviewsForBook(@PathVariable long bookId) {
         Set<Review> reviews = bookRepository.findOne(bookId).getReviews();
@@ -53,6 +77,13 @@ public class ReviewController {
         return response;
     }
 
+    /**
+     * Save one review to the database for the given book.
+     * 
+     * @param bookId book's id.
+     * @param rd review data (text and stars).
+     * @return saved review.
+     */
     @Transactional
     @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Review> saveReview(@PathVariable long bookId, @RequestBody ReviewData rd) {
@@ -78,5 +109,4 @@ public class ReviewController {
 
         return response;
     }
-
 }

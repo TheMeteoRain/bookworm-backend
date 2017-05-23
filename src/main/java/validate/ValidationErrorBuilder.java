@@ -1,19 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package validate;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 
 /**
- *
- * @author Akash
+ * Transforms errors to a human readable form.
+ * 
+ * @version 2017.0522
+ * @author Akash Singh akash.singh@cs.tamk.fi
+ * @since 1.7
  */
 public class ValidationErrorBuilder {
 
+    /**
+     * Validates error and returns human readable error text.
+     * 
+     * @param errors
+     * @return short text about the error.
+     */
     public static ValidationError fromBindingErrors(Errors errors) {
         ValidationError error = new ValidationError("Validation failed. " + errors.getErrorCount() + " error(s)");
         for (ObjectError objectError : errors.getAllErrors()) {
