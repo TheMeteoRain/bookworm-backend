@@ -14,5 +14,11 @@ import org.springframework.data.repository.CrudRepository;
  * @since 1.7
  */
 public interface NotificationRepository extends CrudRepository<Notification, Long> {
+    /**
+     * Fetches a list of notifications by the given book.
+     * 
+     * @param book find notifications by this book.
+     * @return list of notifications.
+     */
     List<Notification> findByBook(Book book);
 }

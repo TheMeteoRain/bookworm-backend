@@ -15,5 +15,11 @@ import java.util.List;
  * @since 1.7
  */
 public interface PublisherRepository extends CrudRepository<Publisher, Long> {
+    /**
+     * Fetches all publishers with the given name.
+     * 
+     * @param name author's name.
+     * @return list of authors.
+     */
     List<Publisher> findByNameContaining(String name);
 }

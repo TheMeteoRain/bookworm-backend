@@ -12,5 +12,11 @@ import org.springframework.data.repository.CrudRepository;
  * @since 1.7
  */
 public interface MemberRepository extends CrudRepository<Member, Long> {
+    /**
+     * Fetches a member by the given username.
+     * 
+     * @param username member's username.
+     * @return first member with the given username.
+     */
     Member findFirstByUsername(String username);
 }
