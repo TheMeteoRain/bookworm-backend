@@ -3,14 +3,29 @@ package com.bookworm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Class that is used to bootstrap and launch a Spring application.
+ * 
+ * @version 2017.0522
+ * @author Akash Singh akash.singh@cs.tamk.fi
+ * @since 1.7
+ */
 @SpringBootApplication
 public class BookStoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BookStoreApplication.class, args);
-                printCommands();
-	}
+    /**
+     * Starting point of the application. 
+     * 
+     * @param args are not used in this program.
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(BookStoreApplication.class, args);
+        printCommands();
+    }
 
+    /**
+     * Prints API endpoints to console at the start of the application.
+     */
     private static void printCommands() {
         System.out.println("");
         System.out.println("");

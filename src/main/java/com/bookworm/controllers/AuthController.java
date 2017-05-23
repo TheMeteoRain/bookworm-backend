@@ -9,17 +9,30 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Scope;
 
-@CrossOrigin(exposedHeaders = "Authorization")
+/**
+ * 
+ * 
+ * @version 2017.0522
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @since 1.7
+ */
 @RestController
+@Scope("singleton")
+@CrossOrigin(exposedHeaders = "Authorization")
 public class AuthController {
 
+    /**
+     * Member repository.
+     */
     @Autowired
     MemberRepository memberRepository;
 
-    public AuthController() {
-        
-    }
+    /**
+     * Default constructor for Spring.
+     */
+    public AuthController() {}
 
     @RequestMapping(value= "/login", method=RequestMethod.POST)
     public String login(@RequestBody LoginCredentials credentials, HttpServletResponse res) {

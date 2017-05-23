@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.hateoas.Link;
 import java.util.Set;
 import javax.annotation.Resource;
+import org.springframework.context.annotation.Scope;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,35 +29,71 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Class that handles all basic notification API endpoints GET and POST.
+ * 
+ * @version 2017.0522
+ * @author Akash Singh akash.singh@cs.tamk.fi
+ * @since 1.7
+ */
 @RestController
+@Scope("singleton")
 @RequestMapping(value = "books/{bookId}/notifications")
 public class NotificationController {
 
+    /**
+     * Defines an object to provide client request information to a servlet.
+     */
     @Resource
     private HttpServletRequest request;
     
+    /**
+     * Book repository.
+     */
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
     
+    /**
+     * Purchase repository.
+     */
     @Autowired
-    PurchaseRepository purchaseRepository;
+    private PurchaseRepository purchaseRepository;
     
+    /**
+     * Member repository.
+     */
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
     
+    /**
+     * Author repository.
+     */
     @Autowired
-    AuthorRepository authorRepository;
+    private AuthorRepository authorRepository;
     
+    /**
+     * Publisher repository.
+     */
     @Autowired
-    PublisherRepository publisherRepository;
+    private PublisherRepository publisherRepository;
     
+    /**
+     * Notification repository.
+     */
     @Autowired
-    NotificationRepository notificationRepository;
+    private NotificationRepository notificationRepository;
 
-    public NotificationController() {
-        
-    }
+    /**
+     * Default constructor for Spring.
+     */
+    public NotificationController() {}
 
+    /**
+     * Fetches all notifications by the given book id.
+     * 
+     * @param bookId books's id.
+     * @return array of notifications as json.
+     */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Notification> getNotificationsByBook(@PathVariable long bookId) {
         Set<Notification> notifications = bookRepository.findOne(bookId).getNotifications();
@@ -75,6 +112,16 @@ public class NotificationController {
         return response;
     }
     
+    /**
+     * Used to leave a notification for the given book.
+     * 
+     * Allowed only when book stock is 0.
+     * When book stock is increased user gets a notification by email, that
+     * the book is in stock.
+     * 
+     * @param bookId book's id.
+     * @return notification as json.
+     */
     @Transactional
     @RequestMapping(method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Notification> setNotification(@PathVariable long bookId) {
