@@ -21,5 +21,5 @@ public interface PublisherRepository extends CrudRepository<Publisher, Long> {
      * @param name author's name.
      * @return list of authors.
      */
-    List<Publisher> findByNameContaining(String name);
+    List<Publisher> findByNameContainingIgnoreCase(String name);
 }
