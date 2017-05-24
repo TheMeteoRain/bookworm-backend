@@ -15,6 +15,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 public class GlobalCorsConfiguration {
+
+    /**
+     * Provides a CORS configurer to the application.
+     *
+     * @return CORS configurer.
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
