@@ -34,7 +34,7 @@ public class PublisherController {
     }
 
     /**
-     * Fetches all publishers by the given text.
+     * Fetches all publishers or the ones matching the search term.
      *
      * @param term find publisher name by this text.
      * @return array of publishers as json.
