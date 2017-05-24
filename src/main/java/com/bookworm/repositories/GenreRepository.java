@@ -4,8 +4,7 @@ import com.bookworm.models.Genre;
 import org.springframework.data.repository.CrudRepository;
 
 /**
- * Genre repository used to fetch information from author table and update
- * given said table in database.
+ * Genre repository used to fetch information from genre table.
  * 
  * @version 2017.0522
  * @author Toni Seppalainen toni.seppalainen@cs.tamk.fi
