@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles authentication API endpoints.
- * 
- * @version 2017.0522
+ *
  * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0522
  * @since 1.7
  */
 @RestController
@@ -32,7 +32,8 @@ public class AuthController {
     /**
      * Default constructor for Spring.
      */
-    public AuthController() {}
+    public AuthController() {
+    }
 
     /**
      * Logs in with the given credentials and gives a JWT token.
@@ -41,7 +42,7 @@ public class AuthController {
      * @param res         Servlet response object.
      * @return Response with a JWT token in headers if login successful.
      */
-    @RequestMapping(value= "/login", method=RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestBody LoginCredentials credentials, HttpServletResponse res) {
 
         Member user = memberRepository.findFirstByUsername(credentials.getUsername());
@@ -67,7 +68,7 @@ public class AuthController {
      * @param credentials Credentials to register with.
      * @return Message was registration successful.
      */
-    @RequestMapping(value= "/register", method=RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestBody MemberRegisterDetails credentials) {
         boolean created = registerMember(credentials);
         if (created) {
@@ -106,7 +107,7 @@ public class AuthController {
      * @return User object as JSON.
      */
     @CrossOrigin
-    @RequestMapping(value= "/me", method=RequestMethod.GET)
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
     public ResponseEntity<?> me(HttpServletRequest req) {
         AuthenticatedUser user = AuthenticatedUser.fromRequest(req);
         return ResponseEntity.ok(user);
