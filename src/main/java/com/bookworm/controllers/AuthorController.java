@@ -33,7 +33,7 @@ public class AuthorController {
     }
 
     /**
-     * Retrieves all authors matching the search term.
+     * Retrieves all authors or found matches for the given search term.
      *
      * @param term The input to search with.
      * @return All found authors.
