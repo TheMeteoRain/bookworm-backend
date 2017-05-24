@@ -44,25 +44,25 @@ public class BookController {
 
     @Resource
     private HttpServletRequest request;
-    
+
     @Autowired
     private BookRepository bookRepository;
-    
+
     @Autowired
     private PurchaseRepository purchaseRepository;
-    
+
     @Autowired
     private MemberRepository memberRepository;
-    
+
     @Autowired
     private AuthorRepository authorRepository;
-    
+
     @Autowired
     private PublisherRepository publisherRepository;
-    
+
     @Autowired
     private NotificationRepository notificationRepository;
-    
+
     @Autowired
     MailSender mailSender;
     
@@ -74,10 +74,10 @@ public class BookController {
     public ResponseEntity<Book> getBooks() {
         Iterable<Book> books = bookRepository.findAll();
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
-        
+
         if (books != null) {
             response = new ResponseEntity(books, HttpStatus.OK);
-            
+
             for (Book book : books) {
                 Link selfLink = linkTo(BookController.class).slash(book.getBookId()).withSelfRel();
                 Link buyLink = linkTo(methodOn(BookController.class).buyBook(book.getBookId(), 0)).withRel("buyBook");
@@ -95,7 +95,7 @@ public class BookController {
                 book.add(setNotificationLink);
             }
         }
-        
+
         return response;
     }
 
@@ -103,10 +103,10 @@ public class BookController {
     public ResponseEntity<Book> getBook(@PathVariable long bookId) {
         Book findThisBook = bookRepository.findOne(bookId);
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
-        
+
         if (findThisBook != null) {
             response = new ResponseEntity(findThisBook, HttpStatus.OK);
-            
+
             Link selfLink = linkTo(BookController.class).slash(findThisBook.getBookId()).withSelfRel();
             Link buyLink = linkTo(methodOn(BookController.class).buyBook(findThisBook.getBookId(), 0)).withRel("buyBook");
             Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(findThisBook.getBookId(), 0)).withRel("addStock");
@@ -122,14 +122,14 @@ public class BookController {
             findThisBook.add(getNotificationLink);
             findThisBook.add(setNotificationLink);
         }
-        
+
         return response;
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> saveBook(@Validated @RequestBody Book book) {
         HttpHeaders headers = new HttpHeaders();
-        
+
         List<Author> authors;
         if ((authors = book.getAuthors()).size() > 0) {
             List<Author> newAuthors = new ArrayList<>();
@@ -139,14 +139,14 @@ public class BookController {
             }
             book.setAuthors(newAuthors);
         }
-        
+
         Publisher publisher;
         if ((publisher = publisherRepository.findOne(book.getPublisher().getPublisherId())) != null) {
             book.setPublisher(publisher);
         }
-        
+
         Book saveThisBook = bookRepository.save(book);
-        
+
         Link selfLink = linkTo(BookController.class).slash(saveThisBook.getBookId()).withSelfRel();
         Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
         Link buyLink = linkTo(methodOn(BookController.class).buyBook(saveThisBook.getBookId(), 0)).withRel("buyBook");
@@ -163,9 +163,9 @@ public class BookController {
         saveThisBook.add(setReviewLink);
         saveThisBook.add(getNotificationLink);
         saveThisBook.add(setNotificationLink);
-        
+
         headers.setLocation(linkTo(BookController.class).slash(saveThisBook.getBookId()).toUri());
-        
+
         return new ResponseEntity(saveThisBook, headers, HttpStatus.CREATED);
     }
     
@@ -176,11 +176,11 @@ public class BookController {
         ResponseEntity<Purchase> response = new ResponseEntity(HttpStatus.NOT_FOUND);
         Member findThisMember = memberRepository.findOne(AuthenticatedUser.fromRequest(request).id);
         Book buyThisBook = bookRepository.findOne(bookId);
-        
+
         if (buyThisBook != null) {
             Purchase newPurchase = new Purchase(findThisMember, buyThisBook, amount);
             headers.setLocation(linkTo(PurchaseController.class).slash(newPurchase.getPurchaseId()).toUri());
-            
+
             if (buyThisBook.getStock() - amount >= 0) {
                 response = new ResponseEntity(newPurchase, headers, HttpStatus.CREATED);
                 buyThisBook.setStock(buyThisBook.getStock() - amount);
@@ -188,7 +188,7 @@ public class BookController {
                 purchaseRepository.save(newPurchase);
                 Link selfLink = linkTo(methodOn(PurchaseController.class).getPurchase(newPurchase.getPurchaseId())).withSelfRel();
                 newPurchase.add(selfLink);
-                
+
                 Link selfBookLink = linkTo(BookController.class).slash(newPurchase.getBook().getBookId()).withSelfRel();
                 Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
                 Link buyLink = linkTo(methodOn(BookController.class).buyBook(newPurchase.getBook().getBookId(), 0)).withRel("buyBook");
@@ -205,15 +205,15 @@ public class BookController {
                 newPurchase.getBook().add(setReviewLink);
                 newPurchase.getBook().add(getNotificationLink);
                 newPurchase.getBook().add(setNotificationLink);
-                
+
             } else {
                 response = new ResponseEntity("{\"code\": 409, \"status\": \"Conflict\", \"message\": \"You cannot buy more than there is stock\"}", headers, HttpStatus.CONFLICT);
             }
         }
-        
+
         return response;
     }
-    
+
     @Transactional
     @RequestMapping(value="/{bookId}/add_stock", method=RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> addStockForBook(@PathVariable long bookId, @RequestBody int amount) {
@@ -221,17 +221,17 @@ public class BookController {
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
         Member findThisMember = memberRepository.findOne(AuthenticatedUser.fromRequest(request).id);
         Book findThisBook = bookRepository.findOne(bookId);
-        
+
         if (findThisBook != null) {
             headers.setLocation(linkTo(BookController.class).slash(findThisBook.getBookId()).toUri());
-            
+
             if (findThisBook.getStock() == 0) {
                 sendMail(findThisBook);
             }
 
             findThisBook.setStock(findThisBook.getStock() + amount);
             bookRepository.save(findThisBook);
-            
+
             response = new ResponseEntity(findThisBook, headers, HttpStatus.OK);
 
             Link selfLink = linkTo(BookController.class).slash(findThisBook.getBookId()).withSelfRel();
@@ -251,7 +251,7 @@ public class BookController {
         } else {
             response = new ResponseEntity("{\"code\": 401, \"status\": \"Unauthorized\", \"message\": \"You do not have permission\"}", headers, HttpStatus.CONFLICT);
         }
-        
+
         return response;
     }
 
@@ -260,16 +260,16 @@ public class BookController {
         HttpHeaders headers = new HttpHeaders();
         Book deleteThisBook = bookRepository.findOne(bookId);
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
-        
+
         if (deleteThisBook != null) {
             headers.setLocation(linkTo(BookController.class).slash(deleteThisBook.getBookId()).toUri());
             response = new ResponseEntity(deleteThisBook, headers, HttpStatus.OK);
-            
+
             bookRepository.delete(deleteThisBook);
             Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
             deleteThisBook.add(allBooks);
         }
-                
+
         return response;
     }
 
@@ -292,14 +292,14 @@ public class BookController {
     private ValidationError createValidationError(MethodArgumentNotValidException e) {
         return ValidationErrorBuilder.fromBindingErrors(e.getBindingResult());
     }
-    
+
     private void sendMail(Book book) {
         List<Notification> notifications = notificationRepository.findByBook(book);
-        
+
         for (Notification notification : notifications) {
             String email = notification.getMember().getEmail();
             String bookName = notification.getBook().getTitle();
-            
+
             SimpleMailMessage message = new SimpleMailMessage();
             message.setSubject("Bookworm - book notification");
             message.setText(bookName + " is now in stock");
@@ -312,9 +312,9 @@ public class BookController {
                 e.printStackTrace();
                 System.out.println("{\"message\": \"Error\"}");
             }
-            
+
             notificationRepository.delete(notification);
         }
-        
+
     }
 }
