@@ -370,7 +370,7 @@ public class BookController {
                 response = new ResponseEntity(deleteThisBook, headers, HttpStatus.OK);
 
                 bookRepository.delete(deleteThisBook);
-                Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+                Link allBooks = linkTo(methodOn(BookController.class).getBooks(1)).withRel("allBooks");
                 deleteThisBook.add(allBooks);
             }
         } else {
