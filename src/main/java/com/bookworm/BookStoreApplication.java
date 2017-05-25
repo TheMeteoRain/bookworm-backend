@@ -30,7 +30,7 @@ public class BookStoreApplication {
         System.out.println("");
         System.out.println("");
 
-        System.out.println("========== Backend Commands ==========");
+        System.out.println("========== Backend Endpoints ==========");
         System.out.println("");
 
         System.out.println("===== AUTHENTICATION=====");
