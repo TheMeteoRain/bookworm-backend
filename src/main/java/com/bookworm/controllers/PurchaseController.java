@@ -63,7 +63,7 @@ public class PurchaseController {
                 purchase.add(selfLink);
                 
                 Link selfBookLink = linkTo(BookController.class).slash(purchase.getBook().getBookId()).withSelfRel();
-                Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+                Link allBooks = linkTo(methodOn(BookController.class).getBooks(1)).withRel("allBooks");
                 Link buyLink = linkTo(methodOn(BookController.class).buyBook(purchase.getBook().getBookId(), 0)).withRel("buyBook");
                 Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(purchase.getBook().getBookId(), 0)).withRel("addStock");
                 Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(purchase.getBook().getBookId())).withRel("getReview");
@@ -102,7 +102,7 @@ public class PurchaseController {
             findThisPurchase.add(selfLink);
 
             Link selfBookLink = linkTo(BookController.class).slash(findThisPurchase.getBook().getBookId()).withSelfRel();
-            Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+            Link allBooks = linkTo(methodOn(BookController.class).getBooks(1)).withRel("allBooks");
             Link buyLink = linkTo(methodOn(BookController.class).buyBook(findThisPurchase.getBook().getBookId(), 0)).withRel("buyBook");
             Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(findThisPurchase.getBook().getBookId(), 0)).withRel("addStock");
             Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(findThisPurchase.getBook().getBookId())).withRel("getReview");
