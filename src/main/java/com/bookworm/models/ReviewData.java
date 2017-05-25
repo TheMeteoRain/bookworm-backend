@@ -1,7 +1,8 @@
 package com.bookworm.models;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Class representation of review data.
@@ -15,11 +16,14 @@ public class ReviewData {
     /**
      * ReviewData's text.
      */
+    @NotBlank(message = "Review text may not be empty")
     private String text;
     
     /**
      * ReviewData's stars.
      */
+    @Max(value = 5, message = "Review stars cannot be higher than 5")
+    @Min(value = 0, message = "Review stars cannot be smaller than 0")
     private double stars;
 
     /**

@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Class that handles all basic review API endpoints GET and POST.
@@ -86,7 +87,7 @@ public class ReviewController {
      */
     @Transactional
     @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Review> saveReview(@PathVariable long bookId, @RequestBody ReviewData rd) {
+    public ResponseEntity<Review> saveReview(@PathVariable long bookId, @Validated @RequestBody ReviewData rd) {
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Review> response = new ResponseEntity(HttpStatus.NOT_FOUND);
         Book findThisBook = bookRepository.findOne(bookId);

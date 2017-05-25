@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
+import javax.validation.constraints.Max;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,7 @@ public class Review extends ResourceSupport implements Serializable {
      */
     private double stars;
 
+    
     /**
      * Default constructor for Spring.
      */

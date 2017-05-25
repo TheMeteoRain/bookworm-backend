@@ -304,38 +304,43 @@ public class BookController {
     @RequestMapping(value="/{bookId}/add_stock", method=RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> addStockForBook(@PathVariable long bookId, @RequestBody int amount) {
         HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
-        Member findThisMember = memberRepository.findOne(AuthenticatedUser.fromRequest(request).id);
+        ResponseEntity<Book> response;
+        AuthenticatedUser checkIfUserIsAdmin = AuthenticatedUser.fromRequest(request);
+        Member findThisMember = memberRepository.findOne(checkIfUserIsAdmin.id);
         Book findThisBook = bookRepository.findOne(bookId);
         
-        if (findThisBook != null) {
-            headers.setLocation(linkTo(BookController.class).slash(findThisBook.getBookId()).toUri());
-            
-            if (findThisBook.getStock() == 0) {
-                sendMail(findThisBook);
+        if (checkIfUserIsAdmin.admin) {
+            if (findThisBook != null) {
+                headers.setLocation(linkTo(BookController.class).slash(findThisBook.getBookId()).toUri());
+
+                if (findThisBook.getStock() == 0) {
+                    sendMail(findThisBook);
+                }
+
+                findThisBook.setStock(findThisBook.getStock() + amount);
+                bookRepository.save(findThisBook);
+
+                response = new ResponseEntity(findThisBook, headers, HttpStatus.OK);
+
+                Link selfLink = linkTo(BookController.class).slash(findThisBook.getBookId()).withSelfRel();
+                Link buyLink = linkTo(methodOn(BookController.class).buyBook(findThisBook.getBookId(), 0)).withRel("buyBook");
+                Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(findThisBook.getBookId(), 0)).withRel("addStock");
+                Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(findThisBook.getBookId())).withRel("getReview");
+                Link setReviewLink = linkTo(methodOn(ReviewController.class).saveReview(findThisBook.getBookId(), null)).withRel("setReview");
+                Link getNotificationLink = linkTo(methodOn(NotificationController.class).getNotificationsByBook(findThisBook.getBookId())).withRel("getNotifications");
+                Link setNotificationLink = linkTo(methodOn(NotificationController.class).setNotification(findThisBook.getBookId())).withRel("setNotification");
+                findThisBook.add(selfLink);
+                findThisBook.add(buyLink);
+                findThisBook.add(addStockLink);
+                findThisBook.add(getReviewLink);
+                findThisBook.add(setReviewLink);
+                findThisBook.add(getNotificationLink);
+                findThisBook.add(setNotificationLink);
+            } else {
+                response = new ResponseEntity("{\"code\": 404, \"status\": \"Not Found\", \"message\": \"Book not found\"}", headers, HttpStatus.NOT_FOUND);
             }
-
-            findThisBook.setStock(findThisBook.getStock() + amount);
-            bookRepository.save(findThisBook);
-            
-            response = new ResponseEntity(findThisBook, headers, HttpStatus.OK);
-
-            Link selfLink = linkTo(BookController.class).slash(findThisBook.getBookId()).withSelfRel();
-            Link buyLink = linkTo(methodOn(BookController.class).buyBook(findThisBook.getBookId(), 0)).withRel("buyBook");
-            Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(findThisBook.getBookId(), 0)).withRel("addStock");
-            Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(findThisBook.getBookId())).withRel("getReview");
-            Link setReviewLink = linkTo(methodOn(ReviewController.class).saveReview(findThisBook.getBookId(), null)).withRel("setReview");
-            Link getNotificationLink = linkTo(methodOn(NotificationController.class).getNotificationsByBook(findThisBook.getBookId())).withRel("getNotifications");
-            Link setNotificationLink = linkTo(methodOn(NotificationController.class).setNotification(findThisBook.getBookId())).withRel("setNotification");
-            findThisBook.add(selfLink);
-            findThisBook.add(buyLink);
-            findThisBook.add(addStockLink);
-            findThisBook.add(getReviewLink);
-            findThisBook.add(setReviewLink);
-            findThisBook.add(getNotificationLink);
-            findThisBook.add(setNotificationLink);
         } else {
-            response = new ResponseEntity("{\"code\": 401, \"status\": \"Unauthorized\", \"message\": \"You do not have permission\"}", headers, HttpStatus.CONFLICT);
+            response = new ResponseEntity("{\"code\": 401, \"status\": \"Unauthorized\", \"message\": \"You do not have permission\"}", headers, HttpStatus.UNAUTHORIZED);
         }
         
         return response;
