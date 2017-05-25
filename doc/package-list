@@ -1,0 +1,6 @@
+com.bookworm
+com.bookworm.controllers
+com.bookworm.models
+com.bookworm.repositories
+com.bookworm.security
+validate
