@@ -45,8 +45,11 @@ INSERT INTO genre (name) VALUES ('Java');
 INSERT INTO genre (name) VALUES ('Python');
 INSERT INTO genre (name) VALUES ('JavaScript');
 
-
-
+INSERT INTO review (member_id, book_id, text, stars) VALUES (1, 1, 'Test review', 4);
+INSERT INTO review (member_id, book_id, text, stars) VALUES (1, 2, 'Test review', 1);
+INSERT INTO review (member_id, book_id, text, stars) VALUES (1, 3, 'Test review', 2);
+INSERT INTO review (member_id, book_id, text, stars) VALUES (1, 4, 'Test review', 3);
+INSERT INTO review (member_id, book_id, text, stars) VALUES (1, 5, 'Test review', 5);
 
 INSERT INTO publisher (name, country, city) VALUES ('McGraw-Hill Education', 'United States', 'New York City');
 INSERT INTO publisher (name, country, city) VALUES ('O''Reilly Media', 'United States', 'Sebastopol, California');
