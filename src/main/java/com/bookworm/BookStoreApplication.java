@@ -50,6 +50,10 @@ public class BookStoreApplication {
         System.out.println("PUT /books/{bookId}/add_stock");
         System.out.println("");
 
+        System.out.println("===== Genres =====");
+        System.out.println("GET /genres");
+        System.out.println("");
+
         System.out.println("===== Publisher =====");
         System.out.println("GET /publishers");
         System.out.println("GET /publishers?search=SEARCH_TERM");
@@ -59,7 +63,6 @@ public class BookStoreApplication {
         System.out.println("GET /authors");
         System.out.println("GET /authors?search=SEARCH_TERM");
         System.out.println("");
-
 
         System.out.println("===== Review =====");
         System.out.println("GET /books/{bookId}/reviews");
