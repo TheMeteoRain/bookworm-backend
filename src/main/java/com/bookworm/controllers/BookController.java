@@ -11,16 +11,10 @@ import com.bookworm.security.AuthenticatedUser;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
-import validate.ValidationError;
-import validate.ValidationErrorBuilder;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.Link;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -33,6 +27,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+import validate.ValidationError;
+import validate.ValidationErrorBuilder;
 
 /**
  * Class that handles all basic book API endpoints GET, POST and DELETE.

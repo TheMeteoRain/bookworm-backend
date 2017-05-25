@@ -81,11 +81,14 @@ public class BookStoreApplication {
         System.out.println("GET /members/{memberId}");
         System.out.println("");
 
-        System.out.println("===== USE THESE USERS (username:password | email:password) =====");
-        System.out.println("admin:admin  | bookworm.mail.service@gmail.com:mailservice");
-        System.out.println("jeppe:jeppe | bookworm.mail.jeppe@gmail.com:mailservice");
-        System.out.println("jussi:jussi | bookworm.mail.jussi@gmail.com:mailservice");
-        System.out.println("");
+        System.out.println("===== USE THESE USERS (username:password) =====");
+        System.out.println("admin:admin");
+        System.out.println("jeppe:jeppe");
+        System.out.println("jussi:jussi");
+        System.out.println("Emails:");
+        System.out.println("admin - email: bookworm.mail.service@gmail.com, password: mailservice");
+        System.out.println("jeppe - email: bookworm.mail.jeppe@gmail.com, password: mailservice");
+        System.out.println("jussi - email: bookworm.mail.jussi@gmail.com, password: mailservice");
         
         System.out.println("========== END ==========");
     }

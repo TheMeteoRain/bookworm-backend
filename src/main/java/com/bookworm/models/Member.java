@@ -1,11 +1,9 @@
 package com.bookworm.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Set;
 import javax.persistence.*;
 import org.springframework.hateoas.ResourceSupport;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Class representation of a member.
