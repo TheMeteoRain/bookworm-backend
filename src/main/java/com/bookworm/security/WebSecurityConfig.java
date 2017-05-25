@@ -1,7 +1,5 @@
 package com.bookworm.security;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,9 +7,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configures the applications security for routes.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0522
+ * @since 1.7
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    /**
+     * Sets up the configuration.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 

@@ -16,21 +16,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@Scope("singleton")
+/**
+ * Class that handles all purchase API endpoints GET and POST.
+ * 
+ * @version 2017.0522
+ * @author Akash Singh akash.singh@cs.tamk.fi
+ * @since 1.7
+ */
 @RestController
+@Scope("singleton")
 @RequestMapping(value = "/purchases")
 public class PurchaseController {
 
+    /**
+     * Book repository.
+     */
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
     
+    /**
+     * Purchase repository.
+     */
     @Autowired
-    PurchaseRepository purchaseRepository;
+    private PurchaseRepository purchaseRepository;
     
-    public PurchaseController() {
-        
-    }
+    /**
+     * Default constructor for Spring.
+     */
+    public PurchaseController() {}
 
+    /**
+     * Fetches purchase histories from database.
+     * 
+     * @return array of purchases as json.
+     */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> getPurchases() {
         Iterable<Purchase> purchases = purchaseRepository.findAll();
@@ -65,6 +84,12 @@ public class PurchaseController {
         return response;
     }
     
+    /**
+     * Fetch a single purchase by the given purchase id.
+     * 
+     * @param purchaseId purchase's id.
+     * @return purchase as json.
+     */
     @RequestMapping(value = "/{purchaseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Purchase> getPurchase(@PathVariable long purchaseId) {
         Purchase findThisPurchase = purchaseRepository.findOne(purchaseId);
