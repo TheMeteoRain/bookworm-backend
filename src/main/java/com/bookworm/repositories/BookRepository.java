@@ -9,9 +9,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends CrudRepository<Book, Long> {
-    //Iterable<Book> findAll();
-    //void delete(Book entity);
-    //void delete(Long id);
+
+    /**
+     * Finds all books
+     *
+     * @param pageable Pageable-object
+     * @return Books
+     */
     Page<Book> findAll(Pageable pageable);
 
     @Modifying(clearAutomatically = true) // http://codingexplained.com/coding/java/spring-framework/updating-entities-with-update-query-spring-data-jpa
@@ -24,6 +28,25 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     Book findOne(Long id);
 
+    /**
+     * Gets books with given word in title, description, genre or author's name.
+     *
+     * @param word search word
+     * @param word2 search word
+     * @param word3 search word
+     * @param word4 search word
+     * @param word5 search word
+     * @param pageable pageable-object
+     * @return books that match
+     */
     Page<Book> findDistinctByTitleContainingOrDescriptionContainingOrAuthors_FirstNameContainingOrAuthors_LastNameContainingOrGenreContainingAllIgnoreCase(String word, String word2, String word3, String word4, String word5, Pageable pageable);
+
+    /**
+     * Finds books of given genre
+     *
+     * @param genre genre of the book
+     * @param pageable Pageable-object
+     * @return books that match
+     */
     Page<Book> findByGenre(String genre, Pageable pageable);
 }

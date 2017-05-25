@@ -272,15 +272,24 @@ public class BookController {
     }
 
     /**
+     * Returns books with given word in it's data.
      *
-     * @param searchWord
-     * @return
+     * @param searchWord Word to look for
+     * @param pageNum page of items
+     * @return books that match
      */
     @RequestMapping(value="/search", method=RequestMethod.GET)
     public Iterable<Book> searchBooks(@RequestParam("search") String searchWord, @RequestParam("page") int pageNum) {
         return bookRepository.findDistinctByTitleContainingOrDescriptionContainingOrAuthors_FirstNameContainingOrAuthors_LastNameContainingOrGenreContainingAllIgnoreCase(searchWord, searchWord, searchWord, searchWord, searchWord, new PageRequest(pageNum - 1, 3));
     }
 
+    /**
+     * Returns books with given genre
+     *
+     * @param genre genre to look for
+     * @param pageNum page of items
+     * @return Books that match
+     */
     @RequestMapping(value="/genre", method=RequestMethod.GET)
     public Iterable<Book> searchByGenre(@RequestParam("genre") String genre, @RequestParam("page") int pageNum) {
         return bookRepository.findByGenre(genre, new PageRequest(pageNum - 1, 3));
