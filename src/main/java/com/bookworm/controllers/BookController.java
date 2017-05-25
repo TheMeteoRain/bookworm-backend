@@ -11,6 +11,11 @@ import com.bookworm.security.AuthenticatedUser;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 import validate.ValidationError;
 import validate.ValidationErrorBuilder;
 import javax.servlet.http.HttpServletRequest;
@@ -29,13 +34,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 @Scope("singleton")
 @RestController
@@ -71,13 +69,13 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> getBooks() {
-        Iterable<Book> books = bookRepository.findAll();
+    public ResponseEntity<Book> getBooks(@RequestParam("page") int page) {
+
+        Iterable<Book> books = bookRepository.findAll(new PageRequest(page - 1, 3));
         ResponseEntity<Book> response = new ResponseEntity(HttpStatus.NOT_FOUND);
 
         if (books != null) {
             response = new ResponseEntity(books, HttpStatus.OK);
-
             for (Book book : books) {
                 Link selfLink = linkTo(BookController.class).slash(book.getBookId()).withSelfRel();
                 Link buyLink = linkTo(methodOn(BookController.class).buyBook(book.getBookId(), 0)).withRel("buyBook");
@@ -148,7 +146,7 @@ public class BookController {
         Book saveThisBook = bookRepository.save(book);
 
         Link selfLink = linkTo(BookController.class).slash(saveThisBook.getBookId()).withSelfRel();
-        Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+        Link allBooks = linkTo(methodOn(BookController.class).getBooks(1)).withRel("allBooks");
         Link buyLink = linkTo(methodOn(BookController.class).buyBook(saveThisBook.getBookId(), 0)).withRel("buyBook");
         Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(saveThisBook.getBookId(), 0)).withRel("addStock");
         Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(saveThisBook.getBookId())).withRel("getReview");
@@ -190,7 +188,7 @@ public class BookController {
                 newPurchase.add(selfLink);
 
                 Link selfBookLink = linkTo(BookController.class).slash(newPurchase.getBook().getBookId()).withSelfRel();
-                Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+                Link allBooks = linkTo(methodOn(BookController.class).getBooks(1)).withRel("allBooks");
                 Link buyLink = linkTo(methodOn(BookController.class).buyBook(newPurchase.getBook().getBookId(), 0)).withRel("buyBook");
                 Link addStockLink = linkTo(methodOn(BookController.class).addStockForBook(newPurchase.getBook().getBookId(), 0)).withRel("addStock");
                 Link getReviewLink = linkTo(methodOn(ReviewController.class).getReviewsForBook(newPurchase.getBook().getBookId())).withRel("getReview");
@@ -266,21 +264,26 @@ public class BookController {
             response = new ResponseEntity(deleteThisBook, headers, HttpStatus.OK);
 
             bookRepository.delete(deleteThisBook);
-            Link allBooks = linkTo(methodOn(BookController.class).getBooks()).withRel("allBooks");
+            Link allBooks = linkTo(methodOn(BookController.class).getBooks(1)).withRel("allBooks");
             deleteThisBook.add(allBooks);
         }
 
         return response;
     }
 
-    @RequestMapping(value="/search/{searchWord}", method=RequestMethod.GET)
-    public Iterable<Book> searchBooks(@PathVariable String searchWord) {
-        return bookRepository.findByTitleContainingOrDescriptionContainingOrAuthors_FirstNameContainingOrAuthors_LastNameContainingOrGenreContainingAllIgnoreCase(searchWord, searchWord, searchWord, searchWord, searchWord);
+    /**
+     *
+     * @param searchWord
+     * @return
+     */
+    @RequestMapping(value="/search", method=RequestMethod.GET)
+    public Iterable<Book> searchBooks(@RequestParam("search") String searchWord, @RequestParam("page") int pageNum) {
+        return bookRepository.findDistinctByTitleContainingOrDescriptionContainingOrAuthors_FirstNameContainingOrAuthors_LastNameContainingOrGenreContainingAllIgnoreCase(searchWord, searchWord, searchWord, searchWord, searchWord, new PageRequest(pageNum - 1, 3));
     }
 
-    @RequestMapping(value="/genre/{genre}", method=RequestMethod.GET)
-    public Iterable<Book> searchByGenre(@PathVariable String genre) {
-        return bookRepository.findByGenre(genre);
+    @RequestMapping(value="/genre", method=RequestMethod.GET)
+    public Iterable<Book> searchByGenre(@RequestParam("genre") String genre, @RequestParam("page") int pageNum) {
+        return bookRepository.findByGenre(genre, new PageRequest(pageNum - 1, 3));
     }
 
     @ExceptionHandler
