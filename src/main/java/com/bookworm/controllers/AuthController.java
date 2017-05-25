@@ -45,7 +45,7 @@ public class AuthController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestBody LoginCredentials credentials, HttpServletResponse res) {
 
-        Member user = memberRepository.findFirstByUsername(credentials.getUsername());
+        Member user = memberRepository.findFirstByUsernameOrEmail(credentials.getUsername(), credentials.getUsername());
         if (user != null) {
             boolean valid = PasswordHasher.compare(credentials.getPassword(), user.getPassword());
             if (valid) {
