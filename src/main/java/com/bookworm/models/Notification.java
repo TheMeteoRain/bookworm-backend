@@ -1,11 +1,8 @@
 package com.bookworm.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.io.Serializable;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Class representation of member's notification.

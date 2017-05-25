@@ -3,8 +3,6 @@ package com.bookworm.controllers;
 import com.bookworm.models.Book;
 import com.bookworm.models.Member;
 import com.bookworm.models.Notification;
-import com.bookworm.models.Review;
-import com.bookworm.models.ReviewData;
 import com.bookworm.repositories.AuthorRepository;
 import com.bookworm.repositories.BookRepository;
 import com.bookworm.repositories.MemberRepository;
@@ -12,22 +10,20 @@ import com.bookworm.repositories.NotificationRepository;
 import com.bookworm.repositories.PublisherRepository;
 import com.bookworm.repositories.PurchaseRepository;
 import com.bookworm.security.AuthenticatedUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.hateoas.Link;
 import java.util.Set;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.hateoas.Link;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Class that handles all basic notification API endpoints GET and POST.

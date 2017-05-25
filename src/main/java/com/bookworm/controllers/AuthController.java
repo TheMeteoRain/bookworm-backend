@@ -3,13 +3,12 @@ package com.bookworm.controllers;
 import com.bookworm.models.Member;
 import com.bookworm.repositories.MemberRepository;
 import com.bookworm.security.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles authentication API endpoints.
