@@ -275,7 +275,7 @@ public class BookController {
 
     @RequestMapping(value="/search/{searchWord}", method=RequestMethod.GET)
     public Iterable<Book> searchBooks(@PathVariable String searchWord) {
-        return bookRepository.findByTitleContainingOrDescriptionContainingOrGenreContainingAllIgnoreCase(searchWord, searchWord, searchWord);
+        return bookRepository.findByTitleContainingOrDescriptionContainingOrAuthors_FirstNameContainingOrAuthors_LastNameContainingOrGenreContainingAllIgnoreCase(searchWord, searchWord, searchWord, searchWord, searchWord);
     }
 
     @RequestMapping(value="/genre/{genre}", method=RequestMethod.GET)

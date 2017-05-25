@@ -21,6 +21,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     Book findOne(Long id);
 
-    Iterable<Book> findByTitleContainingOrDescriptionContainingOrGenreContainingAllIgnoreCase(String word, String word2, String word3);
+    Iterable<Book> findByTitleContainingOrDescriptionContainingOrAuthors_FirstNameContainingOrAuthors_LastNameContainingOrGenreContainingAllIgnoreCase(String word, String word2, String word3, String word4, String word5);
     Iterable<Book> findByGenre(String genre);
 }
