@@ -34,54 +34,53 @@ public class BookStoreApplication {
         System.out.println("");
 
         System.out.println("===== AUTHENTICATION=====");
-        System.out.println("POST /login");
-        System.out.println("POST /register");
-        System.out.println("GET /me");
+        System.out.println("POST /api/login");
+        System.out.println("POST /api/register");
         System.out.println("");
 
         System.out.println("===== Book =====");
-        System.out.println("GET /books");
-        System.out.println("GET /books/{bookId}");
-        System.out.println("GET /books/search/{searchWord}");
-        System.out.println("GET /books/genre/{genre}");
-        System.out.println("POST /books");
-        System.out.println("DELETE /books/[bookId}");
-        System.out.println("PUT /books/{bookId}/buy");
-        System.out.println("PUT /books/{bookId}/add_stock");
+        System.out.println("GET /api/books");
+        System.out.println("GET /api/books/{bookId}");
+        System.out.println("GET /api/books/search/{searchWord}");
+        System.out.println("GET /api/books/genre/{genre}");
+        System.out.println("POST /api/books");
+        System.out.println("DELETE /api/books/[bookId}");
+        System.out.println("PUT /api/books/{bookId}/buy");
+        System.out.println("PUT /api/books/{bookId}/add_stock");
         System.out.println("");
 
         System.out.println("===== Genres =====");
-        System.out.println("GET /genres");
+        System.out.println("GET /api/genres");
         System.out.println("");
 
         System.out.println("===== Publisher =====");
-        System.out.println("GET /publishers");
-        System.out.println("GET /publishers?search=SEARCH_TERM");
+        System.out.println("GET /api/publishers");
+        System.out.println("GET /api/publishers?search=SEARCH_TERM");
         System.out.println("");
 
         System.out.println("===== Author =====");
-        System.out.println("GET /authors");
-        System.out.println("GET /authors?search=SEARCH_TERM");
+        System.out.println("GET /api/authors");
+        System.out.println("GET /api/authors?search=SEARCH_TERM");
         System.out.println("");
 
         System.out.println("===== Review =====");
-        System.out.println("GET /books/{bookId}/reviews");
-        System.out.println("POST /books/{bookId}/reviews");
+        System.out.println("GET /api/books/{bookId}/reviews");
+        System.out.println("POST /api/books/{bookId}/reviews");
         System.out.println("");
 
         System.out.println("===== Notification =====");
-        System.out.println("GET /books/{bookId}/notifications");
-        System.out.println("POST /books/{bookId}/notifications");
+        System.out.println("GET /api/books/{bookId}/notifications");
+        System.out.println("POST /api/books/{bookId}/notifications");
         System.out.println("");
         
         System.out.println("===== Purchase =====");
-        System.out.println("GET /purchases");
-        System.out.println("GET /purchases/{purchaseId}");
+        System.out.println("GET /api/purchases");
+        System.out.println("GET /api/purchases/{purchaseId}");
         System.out.println("");
         
         System.out.println("===== MEMBER =====");
-        System.out.println("GET /members");
-        System.out.println("GET /members/{memberId}");
+        System.out.println("GET /api/members");
+        System.out.println("GET /api/members/{memberId}");
         System.out.println("");
 
         System.out.println("===== USE THESE USERS (username:password) =====");

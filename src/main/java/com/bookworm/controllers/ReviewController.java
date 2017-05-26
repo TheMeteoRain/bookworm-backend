@@ -7,14 +7,9 @@ import com.bookworm.models.ReviewData;
 import com.bookworm.repositories.BookRepository;
 import com.bookworm.repositories.MemberRepository;
 import com.bookworm.security.AuthenticatedUser;
-import java.util.Set;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.hateoas.Link;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +17,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Class that handles all basic review API endpoints GET and POST.
@@ -32,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Scope("singleton")
-@RequestMapping(value = "books/{bookId}/reviews")
+@RequestMapping(value = "/api/books/{bookId}/reviews")
 public class ReviewController {
 
     /**

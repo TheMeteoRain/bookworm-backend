@@ -3,27 +3,27 @@ package com.bookworm.controllers;
 import com.bookworm.models.Book;
 import com.bookworm.models.Member;
 import com.bookworm.models.Notification;
-import com.bookworm.repositories.AuthorRepository;
-import com.bookworm.repositories.BookRepository;
-import com.bookworm.repositories.MemberRepository;
-import com.bookworm.repositories.NotificationRepository;
-import com.bookworm.repositories.PublisherRepository;
-import com.bookworm.repositories.PurchaseRepository;
+import com.bookworm.repositories.*;
 import com.bookworm.security.AuthenticatedUser;
-import java.util.Set;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.hateoas.Link;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Class that handles all basic notification API endpoints GET and POST.
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Scope("singleton")
-@RequestMapping(value = "books/{bookId}/notifications")
+@RequestMapping(value = "/api/books/{bookId}/notifications")
 public class NotificationController {
 
     /**

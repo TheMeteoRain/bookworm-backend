@@ -4,11 +4,7 @@ import com.bookworm.models.Member;
 import com.bookworm.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Class that handles all basic member API endpoints GET and POST.
@@ -19,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Scope("singleton")
-@RequestMapping(value = "/members")
+@RequestMapping(value = "/api/members")
 public class MemberController {
 
     /**

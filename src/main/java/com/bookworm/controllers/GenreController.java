@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Scope("singleton")
-@RequestMapping(value = "/genres")
+@RequestMapping(value = "/api/genres")
 public class GenreController {
 
     /**

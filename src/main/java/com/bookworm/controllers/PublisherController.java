@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Scope("singleton")
-@RequestMapping(value = "/publishers")
+@RequestMapping(value = "/api/publishers")
 public class PublisherController {
 
     /**

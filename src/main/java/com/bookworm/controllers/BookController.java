@@ -1,23 +1,12 @@
 package com.bookworm.controllers;
 
 import com.bookworm.models.*;
-import com.bookworm.repositories.AuthorRepository;
-import com.bookworm.repositories.BookRepository;
-import com.bookworm.repositories.MemberRepository;
-import com.bookworm.repositories.NotificationRepository;
-import com.bookworm.repositories.PublisherRepository;
-import com.bookworm.repositories.PurchaseRepository;
+import com.bookworm.repositories.*;
 import com.bookworm.security.AuthenticatedUser;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.Link;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +20,14 @@ import org.springframework.web.bind.annotation.*;
 import validate.ValidationError;
 import validate.ValidationErrorBuilder;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 /**
  * Class that handles all basic book API endpoints GET, POST and DELETE.
  * 
@@ -40,7 +37,7 @@ import validate.ValidationErrorBuilder;
  */
 @RestController
 @Scope("singleton")
-@RequestMapping(value = "/books")
+@RequestMapping(value = "/api/books")
 public class BookController {
 
     /**

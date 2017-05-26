@@ -26,15 +26,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable().authorizeRequests()
 
+                .antMatchers("/*", "/assets/**").permitAll()
                 .antMatchers(HttpMethod.GET,
-                        "/books",
-                        "/books/{\\d+}",
-                        "/books/search/**",
-                        "/books/genre/**",
-                        "/genres",
-                        "/publishers",
-                        "/authors",
-                        "/books/{\\d+}/reviews"
+                        "/api/books",
+                        "/api/books/{\\d+}",
+                        "/api/books/search/**",
+                        "/api/books/genre/**",
+                        "/api/genres",
+                        "/api/publishers",
+                        "/api/authors",
+                        "/api/books/{\\d+}/reviews"
                 ).permitAll()
                 .antMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
